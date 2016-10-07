@@ -1,11 +1,7 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
-import IconButton from 'material-ui/IconButton';
 import FlatButton from 'material-ui/FlatButton';
 
-function handleTouchTap() {
-  alert('onTouchTap triggered on the title component');
-}
 
 const styles = {
   title: {

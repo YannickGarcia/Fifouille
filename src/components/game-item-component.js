@@ -33,12 +33,7 @@ const dateStyle = {
 
 export default class GameItem extends React.Component {
 
-     constructor(props) {
-    
-    super(props);
-
-    
-    }
+   
 
     renderNameP1() {
         const { p1Winner } = this.props;
