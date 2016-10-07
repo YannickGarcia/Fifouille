@@ -13,13 +13,9 @@ const styles = {
   },
 };
 
-/**
- * This example uses an [IconButton](/#/components/icon-button) on the left, has a clickable `title`
- * through the `onTouchTap` property, and a [FlatButton](/#/components/flat-button) on the right.
- */
 const HeaderApp = () => (
   <AppBar
-    title={<span style={styles.title}>Fifa at work</span>}
+    title={<span style={styles.title}>Fifa at Work</span>}
     iconElementRight={<FlatButton label="Add Game" />}
     showMenuIconButton={false}
   />

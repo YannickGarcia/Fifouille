@@ -2,21 +2,22 @@ import _ from 'lodash';
 import React from 'react';
 import GameItem from './game-item-component';
 
-export default class TodosList extends React.Component {
-    renderItems() {
-        const props = _.omit(this.props, 'todos');
+export default class GameList extends React.Component {
 
-        return _.map(this.props.todos, (todo, index) => <TodosListItem key={index} {...todo} {...props} />);
+
+    renderItems() {
+        const props = _.omit(this.props, 'games');
+
+        return _.map(this.props.games, (game, index) => <GameItem key={index} {...game} {...props} />);
     }
 
     render() {
+
+    console.log(this.props.games);
         return (
-            <table>
-                <TodosListHeader />
-                <tbody>
-                    {this.renderItems()}
-                </tbody>
-            </table>
+            <div>
+               {this.renderItems()}
+            </div>
         );
     }
 }
