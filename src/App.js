@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Navigation from './components/navigation';
 import HeaderApp from './components/header';
+import GameItem from './components/game-item-component';
 import {grey100} from 'material-ui/styles/colors';
 import './App.css';
 
@@ -15,6 +16,9 @@ class App extends Component {
           <div>
             <div style={{position: 'fixed', top: '0', width: '100%'}}>
              <HeaderApp />
+            </div>
+            <div style={{padding: '80px 10px 10px'}}>
+              <GameItem />
             </div>
             <div style={{position: 'fixed', bottom: '0'}}>
              <Navigation />
