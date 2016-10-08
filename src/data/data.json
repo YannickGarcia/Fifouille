@@ -1,0 +1,16 @@
+{
+  "rooms": {
+    "one": {
+      "name": "room alpha",
+      "type": "private"
+    },
+    "two": {
+      "name": "room beta",
+      "type": "open"
+    },
+    "three": {
+      "name": "room zeta",
+      "type": "ta mere"
+    }
+  }
+}
