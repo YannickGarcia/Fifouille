@@ -4,6 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Navigation from './components/navigation';
 import HeaderApp from './components/header';
 import GameList from './components/game-list-component';
+import AddGame from './components/add-game-component';
 import {grey100} from 'material-ui/styles/colors';
 import './App.css';
 
@@ -64,22 +65,20 @@ class App extends Component {
     }
 
     componentDidMount(){
-      //const rootRef = firebase.database().ref().child('react');
-      const rootRef = firebase.database().ref();
-      const speedRef = rootRef.child('speed');
-      speedRef.on('value', snap => {
-        this.setState({
-          speed: snap.val()
+        //const rootRef = firebase.database().ref().child('react');
+        const rootRef = firebase.database().ref();
+        const speedRef = rootRef.child('speed');
+        speedRef.on('value', snap => {
+            this.setState({
+                speed: snap.val()
+            });
+
+
+            const dbRooms = firebase.database().ref().child('rooms');
+            const dbOne = dbRooms.child('one');
+
+            dbOne.on('child_added', snap => console.log(snap.val()));
         });
-      });
-
-
-      const dbRooms = firebase.database().ref().child('rooms');
-      const dbOne = dbRooms.child('one');
-
-      dbOne.on('child_added', snap => console.log(snap.val()));
-      
-
     }
 
   render() {
@@ -88,14 +87,14 @@ class App extends Component {
         <MuiThemeProvider>
           <div>
             <div style={{position: 'fixed', top: '0', width: '100%'}}>
-             <HeaderApp />
+             <HeaderApp /><Navigation />
             </div>
-            <div style={{padding: '80px 10px 10px'}}>
+            <div style={{padding: '150px 10px 10px'}}>
                  <h1>{this.state.speed}</h1>   
                  <GameList games={this.state.games} />
             </div>
-            <div style={{position: 'fixed', bottom: '0'}}>
-             <Navigation />
+            <div>
+                <AddGame />
             </div>
           </div>
         </MuiThemeProvider>

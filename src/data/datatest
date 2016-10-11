@@ -1,0 +1,51 @@
+{
+  "rooms": {
+    "one": {
+      "name": "room alpha",
+      "type": "private"
+    },
+    "two": {
+      "name": "room beta",
+      "type": "open"
+    },
+    "three": {
+      "name": "room zeta",
+      "type": "ta mere"
+    }
+  }
+}
+
+
+{
+  "speeds": {
+    "speed1": {
+      "speed": "193",
+      "type": "good"
+    },
+    "speed2": {
+      "speed": "42",
+      "type": "bad"
+    },
+    "speed3": {
+      "speed": "89",
+      "type": "bof"
+    }
+  }
+}
+
+
+
+    componentDidMount(){
+      //const rootRef = firebase.database().ref().child('react');
+      const rootRef = firebase.database().ref();
+      const speedRef = rootRef.child('speed');
+      speedRef.on('value', snap => {
+        this.setState({
+          speed: snap.val()
+        });
+
+
+      const dbRooms = firebase.database().ref().child('rooms');
+            const dbOne = dbRooms.child('one');
+
+            dbOne.on('child_added', snap => console.log(snap.val()));
