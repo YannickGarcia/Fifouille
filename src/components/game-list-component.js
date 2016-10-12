@@ -1,23 +1,48 @@
-import _ from 'lodash';
 import React from 'react';
 import GameItem from './game-item-component';
+import { gamesRef } from '../firebase-ref';
 
-export default class GameList extends React.Component {
+class GameList extends React.Component {
 
+    constructor(){
+        super();
+        this.state = { games: [], gamesLoading: true}
+    }
 
-    renderItems() {
-        const props = _.omit(this.props, 'games');
+    componentDidMount(){
+        gamesRef.on('value', snap => {
+            const games = [];
+            snap.forEach(shot => {
+                games.push({ ...shot.val(), key: shot.key });
+            });
+            this.setState({ games, gamesLoading: false });
+        })
+    }
 
-        return _.map(this.props.games, (game, index) => <GameItem key={index} {...game} {...props} />);
+    renderGames(){
+        const { games } = this.state;
+        return games.map((game) => <GameItem key={game.key} game={game} />);
     }
 
     render() {
+        const { games, gamesLoading } = this.state;
 
-    console.log(this.props.games);
+        let gameList;
+        if (gamesLoading) {
+            gameList = (<div className="gameList-empty">Loading...</div>);
+        } else if (games.length) {
+            gameList = (<ul>{this.renderGames()}</ul>);
+        } else {
+            gameList = (<div className="gameList-empty">No Speeds</div>);
+        }
+
         return (
-            <div>
-               {this.renderItems()}
+            <div className="gameList">
+                {gameList}
             </div>
         );
     }
+
 }
+
+export default GameList;

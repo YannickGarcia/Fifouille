@@ -15,6 +15,13 @@
   }
 }
 
+{
+  "speeds": {
+    "speed1": "198",
+    "speed2": "313",
+    "speed3": "453"
+  }
+}
 
 {
   "speeds": {
@@ -35,17 +42,20 @@
 
 
 
+
     componentDidMount(){
-      //const rootRef = firebase.database().ref().child('react');
-      const rootRef = firebase.database().ref();
-      const speedRef = rootRef.child('speed');
-      speedRef.on('value', snap => {
-        this.setState({
-          speed: snap.val()
-        });
+        //const rootRef = firebase.database().ref().child('react');
+        const rootRef = firebase.database().ref();
+        const speedRef = rootRef.child('speed');
+        speedRef.on('value', snap => {
+            this.setState({
+                speed: snap.val()
+            });
 
 
-      const dbRooms = firebase.database().ref().child('rooms');
+            const dbRooms = firebase.database().ref().child('rooms');
             const dbOne = dbRooms.child('one');
 
             dbOne.on('child_added', snap => console.log(snap.val()));
+        });
+    }
