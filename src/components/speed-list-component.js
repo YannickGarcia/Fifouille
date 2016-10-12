@@ -1,23 +1,50 @@
-import _ from 'lodash';
+// import _ from 'lodash';
 import React from 'react';
-import GameItem from './game-item-component';
+import SpeedItem from './speed-item';
+import { speedsRef } from '../firebase-ref';
 
-export default class SpeedList extends React.Component {
 
+class SpeedList extends React.Component {
 
-    renderItems() {
-        const props = _.omit(this.props, 'games');
+    constructor(){
+        super();
+        this.state = { speeds: [], speedsLoading: true}
+    }
 
-        return _.map(this.props.games, (game, index) => <GameItem key={index} {...game} {...props} />);
+    componentDidMount(){
+        speedsRef.on('value', snap => {
+            const speeds = [];
+            snap.forEach(shot => {
+                speeds.push({ ...shot.val(), key: shot.key });
+            });
+            this.setState({ speeds, speedsLoading: false });
+        })
+    }
+
+    renderSpeeds(){
+        const { speeds } = this.state;
+        return speeds.map((speed) => <SpeedItem key={speed.key} speed={speed} />);
     }
 
     render() {
+        const { speeds, speedsLoading } = this.state;
 
-        console.log(this.props.games);
+        let speedList;
+        if (speedsLoading) {
+            speedList = (<div className="TaskList-empty">Loading...</div>);
+        } else if (speeds.length) {
+            speedList = (<ul>{this.renderSpeeds()}</ul>);
+        } else {
+            speedList = (<div className="TaskList-empty">No Speeds</div>);
+        }
+
         return (
-            <div>
-                {this.renderItems()}
+            <div className="TaskList">
+                {speedList}
             </div>
         );
     }
+
 }
+
+export default SpeedList;

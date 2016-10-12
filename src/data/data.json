@@ -1,7 +1,16 @@
 {
   "speeds": {
-    "speed1": "198",
-    "speed2": "313",
-    "speed3": "453"
+    "speed1": {
+      "vitesse": "193",
+      "type": "good"
+    },
+    "speed2": {
+      "vitesse": "42",
+      "type": "bad"
+    },
+    "speed3": {
+      "vitesse": "89",
+      "type": "bof"
+    }
   }
 }

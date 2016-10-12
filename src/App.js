@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import * as firebase from 'firebase';
+// import * as firebase from 'firebase';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Navigation from './components/navigation';
 import HeaderApp from './components/header';
 import GameList from './components/game-list-component';
+import SpeedList from './components/speed-list-component';
 import AddGame from './components/add-game-component';
 import {grey100} from 'material-ui/styles/colors';
 import './App.css';
@@ -31,7 +32,7 @@ const games = [
     date: 'Oct. 11',
     p2Name: 'René',
     p2Picture: 'https://66.media.tumblr.com/avatar_314e33e1b13b_128.png',
-    p2Club: 'Paris St Germain',
+    p2Club: 'PSG',
     p2Score: '0',
     p2Winner: false
 },
@@ -60,15 +61,15 @@ class App extends Component {
     this.state = {
        games,
        // <GameList games={this.state.games} />
-       speed : 10
       };
     }
 
     componentDidMount(){
+      /*
         //const rootRef = firebase.database().ref().child('react');
-        const rootRef = firebase.database().ref();
-        const speedRef = rootRef.child('speed');
-        speedRef.on('value', snap => {
+        const rootRef = firebase.database().ref(speeds);
+        //const speedRef = rootRef.child('speed');
+        rootref.on('value', snap => {
             this.setState({
                 speed: snap.val()
             });
@@ -79,6 +80,7 @@ class App extends Component {
 
             dbOne.on('child_added', snap => console.log(snap.val()));
         });
+        */
     }
 
   render() {
@@ -90,7 +92,7 @@ class App extends Component {
              <HeaderApp /><Navigation />
             </div>
             <div style={{padding: '150px 10px 10px'}}>
-                 <h1>{this.state.speed}</h1>   
+                <SpeedList />
                  <GameList games={this.state.games} />
             </div>
             <div>
