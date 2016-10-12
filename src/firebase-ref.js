@@ -15,4 +15,4 @@ firebase.initializeApp(config);
 
 
 const rootRef = firebase.database().ref();
-export const speedsRef = rootRef.child('speeds');
+export const gamesRef = rootRef.child('games');
