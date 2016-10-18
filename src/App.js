@@ -1,31 +1,26 @@
 import React, { Component } from 'react';
-// import * as firebase from 'firebase';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import Navigation from './components/navigation';
 import HeaderApp from './components/header';
-import GameList from './components/game-list-component';
-import AddGame from './components/add-game-component';
-import TaskInput from './components/add-game-bis';
 import {grey100} from 'material-ui/styles/colors';
 import './App.css';
 
 class App extends Component {
 
-  render() {
+render() {
+   const { location } = this.props;
+
     return (
       <div className="App" style={{backgroundColor: grey100, height: '100%'}}>
         <MuiThemeProvider>
           <div>
             <div style={{position: 'fixed', top: '0', width: '100%'}}>
-             <HeaderApp /><Navigation />
+            <HeaderApp />
+            <Navigation location={location}/>
             </div>
-            <div style={{padding: '150px 10px 10px'}}>
-                <GameList />
-                <TaskInput />
-            </div>
-            <div>
-                <AddGame />
-            </div>
+              <div style={{padding: '150px 10px 10px'}}>
+              {this.props.children}
+              </div>
           </div>
         </MuiThemeProvider>
       </div>
