@@ -96,6 +96,7 @@ export default class GameItem extends React.Component {
               <span style={scoreStyle}> - </span>
               <span style={scoreStyle}>{game.p2Score}</span>
               <span style={dateStyle}>{game.date}</span>
+                <span>{game.key}</span>
             </div>
 
             <div style={{flex:'1'}}>

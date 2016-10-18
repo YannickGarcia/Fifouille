@@ -5,6 +5,7 @@ import Navigation from './components/navigation';
 import HeaderApp from './components/header';
 import GameList from './components/game-list-component';
 import AddGame from './components/add-game-component';
+import TaskInput from './components/add-game-bis';
 import {grey100} from 'material-ui/styles/colors';
 import './App.css';
 
@@ -19,8 +20,8 @@ class App extends Component {
              <HeaderApp /><Navigation />
             </div>
             <div style={{padding: '150px 10px 10px'}}>
-
-                 <GameList />
+                <GameList />
+                <TaskInput />
             </div>
             <div>
                 <AddGame />
