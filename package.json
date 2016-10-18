@@ -10,11 +10,13 @@
     "draft-js-mention-plugin": "^2.0.0-beta5",
     "draft-js-plugins-editor": "^2.0.0-beta5",
     "firebase": "^3.4.1",
+    "history": "^4.3.0",
     "lodash": "^4.16.4",
     "material-ui": "^0.16.0",
     "react": "^15.3.2",
     "react-bootstrap": "^0.30.5",
     "react-dom": "^15.3.2",
+    "react-router": "^2.8.1",
     "react-tap-event-plugin": "^1.0.0"
   },
   "scripts": {
