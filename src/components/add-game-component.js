@@ -3,22 +3,22 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import Checkbox from 'material-ui/Checkbox';
-import TextField from 'material-ui/TextField';
+import { tasksRef } from '../firebase-ref';
 
 class AddGame extends Component {
 
-    constructor(props, context) {
-        super(props, context);
+    constructor() {
+        super();
 
         this.handleRequestClose = this.handleRequestClose.bind(this);
         this.handleTouchTap = this.handleTouchTap.bind(this);
-        this.superFonction = this.superFonction.bind(this);
 
         this.state = {
             open: false,
-            submitDisabled: true
+            submitDisabled: true,
+            text: ''
         };
+        this.handleSubmit = this.handleSubmit.bind(this);
     }
 
     handleRequestClose() {
@@ -33,15 +33,19 @@ class AddGame extends Component {
         });
     }
 
-    superFonction(){
-        console.log("Baaaam");
-        this.setState({
-            submitDisabled:false
-        });
+    handleSubmit(event) {
+        event.preventDefault();
+        const newTask = {
+            text: this.state.text.trim(),
+            done: false
+        };
+        if (newTask.text.length) {
+            tasksRef.push(newTask);
+            this.setState({ text: '', submitDisabled: true });
+        }
     }
 
     render(){
-        console.log(this.state)
         const style = {
             position: 'absolute',
             bottom: 20,
@@ -58,7 +62,7 @@ class AddGame extends Component {
                 label="Submit"
                 primary={true}
                 disabled={this.state.submitDisabled}
-                onTouchTap={this.handleRequestClose}
+                onTouchTap={this.handleSubmit}
             />,
         ];
 
@@ -70,14 +74,16 @@ class AddGame extends Component {
                     actions={standardActions}
                     onRequestClose={this.handleRequestClose}
                 >
-                    <TextField
-                        id="text-field-default"
-                        defaultValue="Change Speed"
-                    />
-                    <Checkbox
-                        label="Check this out"
-                        onCheck={this.superFonction}
-                    />
+
+                    <form onSubmit={this.handleSubmit} className="TaskInput-form">
+                        <input
+                            onChange={(evt) => this.setState({ text: evt.target.value, submitDisabled:false })}
+                            value={this.state.text}
+                            type="text"
+                            placeholder="Add a new task..."
+                            required
+                        />
+                    </form>
                 </Dialog>
                 <FloatingActionButton style={style} onTouchTap={this.handleTouchTap}>
                     <ContentAdd />

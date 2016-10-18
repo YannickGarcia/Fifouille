@@ -7,6 +7,8 @@
   },
   "dependencies": {
     "bootstrap": "^3.3.7",
+    "draft-js-mention-plugin": "^2.0.0-beta5",
+    "draft-js-plugins-editor": "^2.0.0-beta5",
     "firebase": "^3.4.1",
     "lodash": "^4.16.4",
     "material-ui": "^0.16.0",
