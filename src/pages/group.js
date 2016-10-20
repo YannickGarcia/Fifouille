@@ -1,10 +1,14 @@
 import React, { Component } from 'react';
+import AddUser from '../components/add-user-component';
 
 class Group extends Component {
 
     render() {
         return (
-            <h1>This is the group page</h1>
+            <div>
+                <h1>This is the group page</h1>
+                <AddUser />
+            </div>
         );
     }
 }
