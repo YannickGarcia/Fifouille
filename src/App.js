@@ -4,6 +4,7 @@ import Navigation from './components/navigation';
 import HeaderApp from './components/header';
 import {grey100} from 'material-ui/styles/colors';
 import './App.css';
+import 'react-select/dist/react-select.css';
 
 class App extends Component {
 
