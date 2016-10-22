@@ -6,7 +6,8 @@ import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { usersRef } from '../firebase-ref';
+import { rootRef, usersRef, muletsRef } from '../firebase-ref';
+import MuletVatar from './mulet-vatar';
 
 class AddUser extends Component {
 
@@ -18,15 +19,66 @@ class AddUser extends Component {
 
         this.state = {
             open: false,
-            //submitDisabled: true,
             submitDisabled: false,
-            //text: '',
             username:'',
-            valueMulet: "Mulet 1",
+            mulets: [],
+            valueMulet: "-KUgtb6GaJBhj_8x1eJh",
             valueLevel: "Beginner"
         };
         this.handleSubmit = this.handleSubmit.bind(this);
+
     }
+
+    // Aller chercher tous les avatars
+    componentDidMount(){
+        muletsRef.on('value', snap => {
+            const mulets = [];
+            snap.forEach(shot => {
+                mulets.push({ ...shot.val(), key: shot.key });
+            });
+            this.setState({ mulets });
+        })
+    }
+
+    renderMulets(){
+
+        const { mulets } = this.state;
+        // console.log(mulets[].available);
+
+        return mulets.map(mulet => {
+            return (mulet.available
+                ? <MenuItem
+                    value={mulet.key}
+                    disabled={false}
+                    primaryText={mulet.name}
+                    children={<MuletVatar bgimg={mulet.url}/>}
+                />
+                :
+                <MenuItem
+                    value={mulet.key}
+                    disabled={true}
+                    primaryText={mulet.name}
+                    children={<MuletVatar bgimg={mulet.url}/>}
+                />
+            );
+        });
+        //return featuredMulets;
+
+       /* MAP plus facile, sans test:
+
+       return mulets.map((mulet) =>
+         <MenuItem
+             value={mulet.key}
+             disabled={mulet.available}
+             primaryText={mulet.name}
+             children={<MuletVatar bgimg={mulet.url}/>}
+         />
+         );*/
+
+    };
+
+
+
 
     handleRequestClose() {
         this.setState({
@@ -45,23 +97,46 @@ class AddUser extends Component {
 
     //onChange={(evt) => this.setState({ username: evt.target.value })}
 
+// ajouter le USER et mettre à jour l'avatar
     handleSubmit(event) {
         event.preventDefault();
+
+        // on récupère les données
         const newUser = {
-            //text: this.state.text.trim(),
             username: this.state.username.trim(),
-            //done: false
             gamesLost: 0,
             gamesPlayed: 0,
             gamesWon: 0,
             level: this.state.valueLevel,
             picture: this.state.valueMulet,
-            points:1000
+            points:1000,
+            groupKey: '-KUh54HpGOGP850b2Tpu'
         };
+
+
+
         if (newUser.username.length) {
-            usersRef.push(newUser);
-            //this.setState({ text: '', submitDisabled: true });
-            this.setState({ username: '', submitDisabled: true });
+
+            // ajout normal du user sans récup sa Key
+            // usersRef.push(newUser);
+
+            // PUSH ET récupération de la key du nouveau user
+            const newUserKey = usersRef.push(newUser).key;
+
+            // récup de la Key du mulet sélectionné
+            const muletKey = newUser.picture;
+
+            // on set les nouvelles valeur du mulet
+            const muletNewData = {
+                available: false,
+                userKey: newUserKey
+            };
+
+            // on mets à jour le mulet sélectionné avec les nouvelles valeurs
+            rootRef.child('muletvatars/' + muletKey).update(muletNewData);
+
+            // on reset les champs
+            this.setState({ username: '', submitDisabled: true, valueMulet: "-KUgtb6GaJBhj_8x1eJh", });
         }
     }
 
@@ -72,6 +147,28 @@ class AddUser extends Component {
             right: 20,
             zIndex: '100'
         };
+
+        /*const options = [
+            { value: 'one', label: 'One' },
+            { value: 'two', label: 'Two' }
+        ];*/
+
+        const { mulets } = this.state;
+
+        let muletList;
+        if (mulets.length) {
+            muletList = (
+                <SelectField
+                value={this.state.valueMulet}
+                onChange={this.handleChangeMulet}>
+                    {this.renderMulets()}
+                </SelectField>
+            );
+        } else {
+            muletList = (<div className="muletList-empty">No Muletvatar available</div>);
+        }
+
+
         const standardActions = [
             <FlatButton
                 label="Cancel"
@@ -95,7 +192,10 @@ class AddUser extends Component {
                     onRequestClose={this.handleRequestClose}
                 >
 
+
                     <form onSubmit={this.handleSubmit} className="TaskInput-form">
+
+                        <br/><br/>
                         <TextField
                             hintText=""
                             floatingLabelText="User Name"
@@ -103,13 +203,9 @@ class AddUser extends Component {
                             value={this.state.username}
                         /><br /><br />
                         <h4>Mulet:</h4>
-                        <SelectField value={this.state.valueMulet} onChange={this.handleChangeMulet}>
-                            <MenuItem value={"Mulet 1"} primaryText="Mulet 1" />
-                            <MenuItem value={"Mulet 2"} primaryText="Mulet 2" />
-                            <MenuItem value={"Mulet 3"} primaryText="Mulet 3" />
-                            <MenuItem value={"Mulet 4"} primaryText="Mulet 4" />
-                            <MenuItem value={"Mulet 5"} primaryText="Mulet 5" />
-                        </SelectField><br /><br />
+                        {muletList}
+                        <br /><br />
+
                         <h4>Level</h4>
                         <SelectField value={this.state.valueLevel} onChange={this.handleChangeLevel}>
                             <MenuItem value={"Beginner"} primaryText="Beginner" />

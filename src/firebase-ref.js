@@ -14,7 +14,9 @@ firebase.initializeApp(config);
 
 
 
-const rootRef = firebase.database().ref();
+export const rootRef = firebase.database().ref();
 export const gamesRef = rootRef.child('games');
 export const tasksRef = rootRef.child('todos');
 export const usersRef = rootRef.child('users');
+export const muletsRef = rootRef.child('muletvatars');
+export const groupsRef = rootRef.child('groups');
