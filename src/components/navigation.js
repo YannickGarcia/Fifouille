@@ -13,20 +13,21 @@ const groupIcon = <IconGroup />;
 
 class Navigation extends Component {
 
-
   render() {
 
-      //const { history } = this.props;
-      //console.log(history.isActive("group"));
+       const { location } = this.props;
 
-      const { location } = this.props;
-      const { collapsed } = this.state;
-      // const featuredClass = location.pathname === "/" ? "active" : "";
-      // const archivesClass = location.pathname.match(/^\/archives/) ? "active" : "";
-      // const settingsClass = location.pathname.match(/^\/settings/) ? "active" : "";
+      let tabSelect;
+      if (location.pathname === "/") {
+          tabSelect = 0;
+      } else if (location.pathname.match(/^\/ranking/)) {
+          tabSelect = 1;
+      } else if (location.pathname.match(/^\/group/)){
+          tabSelect = 2;
+      }
 
     return (
-        <Tabs initialSelectedIndex="1">
+        <Tabs initialSelectedIndex={tabSelect}>
             <Tab
                 icon={gamesIcon}
                 label="GAMES"
