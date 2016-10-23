@@ -108,7 +108,7 @@ class AddUser extends Component {
             gamesPlayed: 0,
             gamesWon: 0,
             level: this.state.valueLevel,
-            picture: this.state.valueMulet,
+            muletKey: this.state.valueMulet,
             points:1000,
             groupKey: '-KUh54HpGOGP850b2Tpu'
         };
@@ -124,7 +124,7 @@ class AddUser extends Component {
             const newUserKey = usersRef.push(newUser).key;
 
             // récup de la Key du mulet sélectionné
-            const muletKey = newUser.picture;
+            const muletKey = newUser.muletKey;
 
             // on set les nouvelles valeur du mulet
             const muletNewData = {
@@ -136,7 +136,7 @@ class AddUser extends Component {
             rootRef.child('muletvatars/' + muletKey).update(muletNewData);
 
             // on reset les champs
-            this.setState({ username: '', submitDisabled: true, valueMulet: "-KUgtb6GaJBhj_8x1eJh", });
+            this.setState({ username: '', submitDisabled: false, valueMulet: "-KUgtb6GaJBhj_8x1eJh", });
         }
     }
 
@@ -160,6 +160,7 @@ class AddUser extends Component {
             muletList = (
                 <SelectField
                 value={this.state.valueMulet}
+                floatingLabelText="Choose Your Mulet"
                 onChange={this.handleChangeMulet}>
                     {this.renderMulets()}
                 </SelectField>
@@ -187,7 +188,7 @@ class AddUser extends Component {
             <div>
                 <Dialog
                     open={this.state.open}
-                    title="Add User"
+                    title="Add Player"
                     actions={standardActions}
                     onRequestClose={this.handleRequestClose}
                 >
@@ -195,19 +196,17 @@ class AddUser extends Component {
 
                     <form onSubmit={this.handleSubmit} className="TaskInput-form">
 
-                        <br/><br/>
                         <TextField
                             hintText=""
-                            floatingLabelText="User Name"
+                            floatingLabelText="Player Name"
                             onChange={(evt) => this.setState({ username: evt.target.value })}
                             value={this.state.username}
                         /><br /><br />
-                        <h4>Mulet:</h4>
                         {muletList}
                         <br /><br />
 
-                        <h4>Level</h4>
-                        <SelectField value={this.state.valueLevel} onChange={this.handleChangeLevel}>
+                        <SelectField value={this.state.valueLevel} onChange={this.handleChangeLevel}
+                                     floatingLabelText="What's your level">
                             <MenuItem value={"Beginner"} primaryText="Beginner" />
                             <MenuItem value={"Intermediate"} primaryText="Intermediate" />
                             <MenuItem value={"Expert"} primaryText="Expert" />
