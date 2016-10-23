@@ -16,8 +16,17 @@ class Navigation extends Component {
 
   render() {
 
+      //const { history } = this.props;
+      //console.log(history.isActive("group"));
+
+      const { location } = this.props;
+      const { collapsed } = this.state;
+      // const featuredClass = location.pathname === "/" ? "active" : "";
+      // const archivesClass = location.pathname.match(/^\/archives/) ? "active" : "";
+      // const settingsClass = location.pathname.match(/^\/settings/) ? "active" : "";
+
     return (
-        <Tabs>
+        <Tabs initialSelectedIndex="1">
             <Tab
                 icon={gamesIcon}
                 label="GAMES"
