@@ -35,6 +35,7 @@ const dateStyle = {
 };
 */
 
+
 export default class UserItem extends React.Component {
 
     constructor() {
@@ -72,7 +73,14 @@ export default class UserItem extends React.Component {
                 primaryText={user.username}
                 leftAvatar={<Avatar src={this.state.myURL} />}
               //  leftAvatar={<Avatar src={this.myFunction()} />}
-               secondaryText={user.points}
+               secondaryText={
+                   'Pts: ' + user.points +
+                   ' - G: ' + user.gamesPlayed +
+                   ' W: ' + user.gamesWon +
+                   // ' D:' + user.gamesDraw +
+                   ' L: ' + user.gamesLost
+
+               }
             />
         );
 

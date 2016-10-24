@@ -1,6 +1,7 @@
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
 import {grey900, grey600, grey500, cyan500} from 'material-ui/styles/colors';
+import { rootRef } from '../firebase-ref';
 
 
 const myStyle = {
@@ -33,6 +34,42 @@ const dateStyle = {
 
 export default class GameItem extends React.Component {
 
+    constructor() {
+        super();
+
+        this.state = {
+            player1Name:'',
+            player1Mulet:'',
+            player2Name:'',
+            player2Mulet:''
+        };
+    }
+
+    componentDidMount(){
+        const { game } = this.props;
+
+        // Grab name of P1 and then the mulet URL
+        const name1Key = game.p1Key;
+        rootRef.child('users/' + name1Key).once('value', snap => {
+            this.setState({player1Name:snap.val().username});
+            // Grab mulet :D
+            rootRef.child('muletvatars/' + snap.val().muletKey).once('value', snap => {
+                this.setState({player1Mulet:snap.val().url});
+            });
+        });
+
+        // Grab name of P2 and then the Mulet URL
+        const name2Key = game.p2Key;
+        rootRef.child('users/' + name2Key).once('value', snap => {
+            this.setState({player2Name:snap.val().username});
+            // Grab mulet :D
+            rootRef.child('muletvatars/' + snap.val().muletKey).once('value', snap => {
+                this.setState({player2Mulet:snap.val().url});
+            });
+        });
+
+
+    }
 
     renderNameP1() {
 
@@ -49,7 +86,7 @@ export default class GameItem extends React.Component {
         };
 
         return (
-           <span style={nameStyleP1}>{game.p1Name}</span>
+           <span style={nameStyleP1}>{this.state.player1Name}</span>
         );
     }
 
@@ -68,7 +105,7 @@ export default class GameItem extends React.Component {
         };
 
         return (
-           <span style={nameStyleP2}>{game.p2Name}</span>
+           <span style={nameStyleP2}>{this.state.player2Name}</span>
         );
     }
 
@@ -81,13 +118,13 @@ export default class GameItem extends React.Component {
 
             <div style={{flex:'1'}}>
               <Avatar
-                  src={game.p1Picture}
+                  src={this.state.player1Mulet}
                   size={40}
                   style={{margin: '0px', float:'left'}}
                 />
                 <div style={{float: 'left', padding:'4px 0 0 10px'}}>
                   {this.renderNameP1()}
-                  <span style={subNameStyle}>{game.p1Club}</span>
+                  <span style={subNameStyle}>{game.p1Team}</span>
                 </div>
             </div>
 
@@ -96,18 +133,17 @@ export default class GameItem extends React.Component {
               <span style={scoreStyle}> - </span>
               <span style={scoreStyle}>{game.p2Score}</span>
               <span style={dateStyle}>{game.date}</span>
-                <span>{game.key}</span>
             </div>
 
             <div style={{flex:'1'}}>
               <Avatar
-                  src={game.p2Picture}
+                  src={this.state.player2Mulet}
                   size={40}
                   style={{margin: '0px', float:'right'}}
                 />
                 <div style={{float: 'right', padding:'4px 10px 0 0', textAlign:'right'}}>
                   {this.renderNameP2()}
-                  <span style={subNameStyle}>{game.p2Club}</span>
+                  <span style={subNameStyle}>{game.p2Team}</span>
                 </div>
             </div>
 

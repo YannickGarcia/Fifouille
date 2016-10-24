@@ -1,9 +1,16 @@
 import React, {Component} from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+import SelectField from 'material-ui/SelectField';
+import TextField from 'material-ui/TextField';
+import MenuItem from 'material-ui/MenuItem';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { tasksRef } from '../firebase-ref';
+import { gamesRef, timeRef, usersRef } from '../firebase-ref';
+
+const styleList = {
+    width: '100%'
+}
 
 class AddGame extends Component {
 
@@ -15,8 +22,22 @@ class AddGame extends Component {
 
         this.state = {
             open: false,
-            submitDisabled: true,
-            text: ''
+            submitDisabled: false,
+            p1Key:'',
+            valuep1Key:'',
+            p1Team:'',
+            p1Score:'',
+            p1Winner:'popo',
+            p1Draw:'',
+            p1Loser:'',
+            p2Key:'',
+            valuep2Key:'',
+            p2Team:'',
+            p2Score:'',
+            p2Winner:'',
+            p2Draw:'',
+            p2Loser:'',
+            users: []
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -33,15 +54,76 @@ class AddGame extends Component {
         });
     }
 
+    componentDidMount(){
+        usersRef.on('value', snap => {
+            const users = [];
+            snap.forEach(shot => {
+                users.push({ ...shot.val(), key: shot.key });
+            });
+            this.setState({ users });
+        })
+    }
+
+    renderUsers(){
+        const { users } = this.state;
+        return users.map((user) => <MenuItem key={user.key} value={user.key} primaryText={user.username} />);
+    }
+
+
+    handleChangeP1Key = (event, index, valuep1Key, evt) => this.setState({valuep1Key, p1Key: valuep1Key});
+    handleChangeP2Key = (event, index, valuep2Key, evt) => this.setState({valuep2Key, p2Key: valuep2Key});
+
     handleSubmit(event) {
         event.preventDefault();
-        const newTask = {
-            text: this.state.text.trim(),
-            done: false
+
+        const p1Score = this.state.p1Score.trim();
+        const p2Score = this.state.p2Score.trim();
+
+        //console.log(p1Score);
+        if(p1Score > p2Score){
+            this.setState({ p1Winner: true, p1Draw: false, p1Loser: false, p2Winner: false, p2Draw: false, p2Loser: true }, function () {
+                this.myFunctionPush();
+            });
+
+        }else if(p1Score === p2Score){
+            this.setState({ p1Winner: false, p1Draw: true, p1Loser: false, p2Winner: false, p2Draw: true, p2Loser: false }, function () {
+                this.myFunctionPush();
+            });
+        }else if(p1Score < p2Score){
+            this.setState({ p1Winner: false, p1Draw: false, p1Loser: true, p2Winner: true, p2Draw: false, p2Loser: false }, function () {
+                this.myFunctionPush();
+            });
+        }
+
+
+    }
+
+    myFunctionPush(){
+        const newGame = {
+            p1Key:this.state.valuep1Key,
+            p1Team:this.state.p1Team.trim(),
+            p1Score:this.state.p1Score.trim(),
+            p1Winner:this.state.p1Winner,
+            p1Draw:this.state.p1Draw,
+            p1Loser:this.state.p1Loser,
+            p2Key:this.state.valuep2Key,
+            p2Team:this.state.p2Team.trim(),
+            p2Score:this.state.p2Score.trim(),
+            p2Winner:this.state.p2Winner,
+            p2Draw:this.state.p2Draw,
+            p2Loser:this.state.p2Loser,
+            timeStamp:timeRef,
+            groupKey: '-KUh54HpGOGP850b2Tpu'
         };
-        if (newTask.text.length) {
-            tasksRef.push(newTask);
-            this.setState({ text: '', submitDisabled: true });
+        if (newGame.p1Team.length) {
+            gamesRef.push(newGame);
+            this.setState({
+                p1Team: '',
+                p2Team: '',
+                p1Score: '',
+                p2Score: '',
+                submitDisabled: false
+            });
         }
     }
 
@@ -59,7 +141,7 @@ class AddGame extends Component {
                 onTouchTap={this.handleRequestClose}
             />,
             <FlatButton
-                label="Submit"
+                label="Add Game"
                 primary={true}
                 disabled={this.state.submitDisabled}
                 onTouchTap={this.handleSubmit}
@@ -70,19 +152,63 @@ class AddGame extends Component {
             <div>
                 <Dialog
                     open={this.state.open}
+                    contentStyle={styleList}
                     title="Add Game"
                     actions={standardActions}
                     onRequestClose={this.handleRequestClose}
                 >
 
-                    <form onSubmit={this.handleSubmit} className="TaskInput-form">
-                        <input
-                            onChange={(evt) => this.setState({ text: evt.target.value, submitDisabled:false })}
-                            value={this.state.text}
-                            type="text"
-                            placeholder="Add a new task..."
-                            required
-                        />
+                    <form onSubmit={this.handleSubmit.bind(this)} className="TaskInput-form">
+                        <div style={{display:'flex', marginRight:7}}>
+                            <div style={{flex:'1 1 0%'}}>
+                                <SelectField
+                                    value={this.state.valuep1Key}
+                                    style={styleList}
+                                    floatingLabelText="Player 1"
+                                    onChange={this.handleChangeP1Key}>
+                                    {this.renderUsers()}
+                                </SelectField>
+                                <TextField
+                                    hintText=""
+                                    floatingLabelText="Team P1"
+                                    style={styleList}
+                                    onChange={(evt) => this.setState({ p1Team: evt.target.value })}
+                                    value={this.state.p1Team}
+                                />
+                                <TextField
+                                    hintText=""
+                                    floatingLabelText="Score P1"
+                                    style={styleList}
+                                    onChange={(evt) => this.setState({ p1Score: evt.target.value })}
+                                    value={this.state.p1Score}
+                                />
+
+                            </div>
+                            <div style={{flex:'1 1 0%', paddingLeft:7}}>
+                                <SelectField
+                                    value={this.state.valuep2Key}
+                                    style={styleList}
+                                    floatingLabelText="Player 2"
+                                    onChange={this.handleChangeP2Key}>
+                                    {this.renderUsers()}
+                                </SelectField>
+                            <TextField
+                                hintText=""
+                                floatingLabelText="Team P2"
+                                style={styleList}
+                                onChange={(evt) => this.setState({ p2Team: evt.target.value })}
+                                value={this.state.p2Team}
+                            />
+                            <TextField
+                                hintText=""
+                                floatingLabelText="Score P2"
+                                style={styleList}
+                                onChange={(evt) => this.setState({ p2Score: evt.target.value })}
+                                value={this.state.p2Score}
+                            />
+                            </div>
+
+                        </div>
                     </form>
                 </Dialog>
                 <FloatingActionButton style={style} onTouchTap={this.handleTouchTap}>

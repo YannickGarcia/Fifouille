@@ -20,3 +20,5 @@ export const tasksRef = rootRef.child('todos');
 export const usersRef = rootRef.child('users');
 export const muletsRef = rootRef.child('muletvatars');
 export const groupsRef = rootRef.child('groups');
+
+export const timeRef = firebase.database.ServerValue.TIMESTAMP;

@@ -9,7 +9,13 @@ import ContentAdd from 'material-ui/svg-icons/content/add';
 import { rootRef, usersRef, muletsRef } from '../firebase-ref';
 import MuletVatar from './mulet-vatar';
 
+const menuItemStyle = {
+    overflow:'auto',
+    padding: '0 12px'
+}
+
 class AddUser extends Component {
+
 
     constructor() {
         super();
@@ -22,6 +28,7 @@ class AddUser extends Component {
             submitDisabled: false,
             username:'',
             mulets: [],
+            userMuletName:'',
             valueMulet: "-KUgtb6GaJBhj_8x1eJh",
             valueLevel: "Beginner"
         };
@@ -46,23 +53,36 @@ class AddUser extends Component {
         // console.log(mulets[].available);
 
         return mulets.map((mulet, index) => {
-            return (mulet.available
-                ? <MenuItem
-                    value={mulet.key}
-                    key={index}
-                    disabled={false}
-                    primaryText={mulet.name}
-                    children={<MuletVatar bgimg={mulet.url}/>}
-                />
-                :
-                <MenuItem
-                    value={mulet.key}
-                    key={index}
-                    disabled={true}
-                    primaryText={mulet.name}
-                    children={<MuletVatar bgimg={mulet.url}/>}
-                />
-            );
+                if(mulet.available) {
+                    return (
+                        <MenuItem
+                            value={mulet.key}
+                            innerDivStyle={menuItemStyle}
+                            key={index}
+                            disabled={false}
+                            primaryText={mulet.name}
+                            children={<MuletVatar bgimg={mulet.url}/>}
+                        />
+                    )
+                }
+                else{
+                    // Aller chercher le nom du User selon l'avatar en cours
+                    const userKey = mulet.userKey;
+                    rootRef.child('users/' + userKey).once('value', snap => {
+                        //this.setState({userMuletName:snap.val().url});
+                    });
+                    return(
+                    <MenuItem
+                        value={mulet.key}
+                        key={index}
+                        disabled={true}
+                        innerDivStyle={menuItemStyle}
+                        primaryText={mulet.name}
+                        children={<MuletVatar bgimg={mulet.url}/>}
+                    />
+                    )
+                }
+
         });
         //return featuredMulets;
 
@@ -95,7 +115,7 @@ class AddUser extends Component {
     }
 
     handleChangeMulet = (event, index, valueMulet, evt) => this.setState({valueMulet, picture: valueMulet});
-    handleChangeLevel = (event, index, valueLevel, evt) => this.setState({valueLevel, level: valueLevel});
+   // handleChangeLevel = (event, index, valueLevel, evt) => this.setState({valueLevel, level: valueLevel});
 
     //onChange={(evt) => this.setState({ username: evt.target.value })}
 
@@ -109,7 +129,6 @@ class AddUser extends Component {
             gamesLost: 0,
             gamesPlayed: 0,
             gamesWon: 0,
-            level: this.state.valueLevel,
             muletKey: this.state.valueMulet,
             points:1000,
             groupKey: '-KUh54HpGOGP850b2Tpu'
@@ -205,14 +224,6 @@ class AddUser extends Component {
                             value={this.state.username}
                         /><br /><br />
                         {muletList}
-                        <br /><br />
-
-                        <SelectField value={this.state.valueLevel} onChange={this.handleChangeLevel}
-                                     floatingLabelText="What's your level">
-                            <MenuItem value={"Beginner"} primaryText="Beginner" />
-                            <MenuItem value={"Intermediate"} primaryText="Intermediate" />
-                            <MenuItem value={"Expert"} primaryText="Expert" />
-                        </SelectField>
                     </form>
                 </Dialog>
                 <FloatingActionButton style={style} onTouchTap={this.handleTouchTap}>
