@@ -37,7 +37,13 @@ class AddGame extends Component {
             p2Winner:'',
             p2Draw:'',
             p2Loser:'',
-            users: []
+            users: [],
+            p1Points:'',
+            p1PointsNew:'',
+            p2Points:'',
+            p2PointsNew:'',
+            goalDif:''
+
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -84,6 +90,7 @@ class AddGame extends Component {
             this.setState({ p1Winner: true, p1Draw: false, p1Loser: false, p2Winner: false, p2Draw: false, p2Loser: true }, function () {
                 this.pushTheGame();
                 this.p1Wins();
+                this.p1WinsRenderELO();
 
             });
 
@@ -91,15 +98,106 @@ class AddGame extends Component {
             this.setState({ p1Winner: false, p1Draw: true, p1Loser: false, p2Winner: false, p2Draw: true, p2Loser: false }, function () {
                 this.pushTheGame();
                 this.isDraw();
+                this.p2WinsRenderELO();
             });
         }else if(p1Score < p2Score){
             this.setState({ p1Winner: false, p1Draw: false, p1Loser: true, p2Winner: true, p2Draw: false, p2Loser: false }, function () {
                 this.pushTheGame();
                 this.p2Wins();
+                this.isDrawRenderELO();
             });
         }
 
 
+    }
+
+    p1WinsRenderELO(){
+
+        //récup des points de P1
+        rootRef.child('users/' + this.state.p1Key).once('value', snap => {
+            this.setState({p1Points:snap.val().points}, function () {
+                //récup des points de P2
+                rootRef.child('users/' + this.state.p2Key).once('value', snap => {
+                    this.setState({p2Points:snap.val().points}, function () {
+                        const diffRating =  Number(this.state.p2Points) - Number(this.state.p1Points);
+                        const myChanceToWin = 1 / (Math.pow(10, diffRating / 400) + 1);
+                        const getRatingDelta =  Math.round(40 * (1 - myChanceToWin)); // 1 because win
+                        const getNewRating = Number(this.state.p1Points) + getRatingDelta;
+                        console.log(getNewRating);
+
+                        // push in DB
+                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRating});
+                    });
+                });
+
+            });
+        });
+    }
+
+    p2WinsRenderELO(){
+
+        //récup des points de P2
+        rootRef.child('users/' + this.state.p2Key).once('value', snap => {
+            this.setState({p2Points:snap.val().points}, function () {
+                //récup des points de P2
+                rootRef.child('users/' + this.state.p1Key).once('value', snap => {
+                    this.setState({p1Points:snap.val().points}, function () {
+                        const diffRating =  Number(this.state.p1Points) - Number(this.state.p2Points);
+                        const myChanceToWin = 1 / (Math.pow(10, diffRating / 400) + 1);
+                        const getRatingDelta =  Math.round(40 * (1 - myChanceToWin)); // 1 because win
+                        const getNewRating = Number(this.state.p2Points) + getRatingDelta;
+                        console.log(getNewRating);
+
+                        // push in DB
+                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRating});
+                    });
+                });
+
+            });
+        });
+    }
+
+    isDrawRenderELO(){
+
+        //récup des points de P2
+        rootRef.child('users/' + this.state.p2Key).once('value', snap => {
+            this.setState({p2Points:snap.val().points}, function () {
+                //récup des points de P2
+                rootRef.child('users/' + this.state.p1Key).once('value', snap => {
+                    this.setState({p1Points:snap.val().points}, function () {
+                        const diffRating =  Number(this.state.p1Points) - Number(this.state.p2Points);
+                        const myChanceToWin = 1 / (Math.pow(10, diffRating / 400) + 1);
+                        const getRatingDelta =  Math.round(40 * (0.5 - myChanceToWin)); // 1 because win
+                        const getNewRating = Number(this.state.p2Points) + getRatingDelta;
+                        console.log(getNewRating);
+
+                        // push in DB
+                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRating});
+                    });
+                });
+
+            });
+        });
+
+        //récup des points de P1
+        rootRef.child('users/' + this.state.p1Key).once('value', snap => {
+            this.setState({p1Points:snap.val().points}, function () {
+                //récup des points de P2
+                rootRef.child('users/' + this.state.p2Key).once('value', snap => {
+                    this.setState({p2Points:snap.val().points}, function () {
+                        const diffRating =  Number(this.state.p2Points) - Number(this.state.p1Points);
+                        const myChanceToWin = 1 / (Math.pow(10, diffRating / 400) + 1);
+                        const getRatingDelta =  Math.round(40 * (0.5 - myChanceToWin)); // 1 because win
+                        const getNewRating = Number(this.state.p1Points) + getRatingDelta;
+                        console.log(getNewRating);
+
+                        // push in DB
+                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRating});
+                    });
+                });
+
+            });
+        });
     }
 
     p1Wins(){
