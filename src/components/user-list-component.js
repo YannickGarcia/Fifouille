@@ -2,7 +2,7 @@ import React from 'react';
 import UserItem from './user-item-component';
 import {List} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
-import { usersRef, muletsRef } from '../firebase-ref';
+import { usersRef } from '../firebase-ref';
 
 class userList extends React.Component {
 

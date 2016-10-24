@@ -40,29 +40,28 @@ export default class UserItem extends React.Component {
     constructor() {
         super();
 
-        this.state = { usersMulets: [] };
+        this.state = { myURL:'' };
     }
 
     componentDidMount(){
-
         const { user } = this.props;
         const muletKey = user.muletKey;
         rootRef.child('muletvatars/' + muletKey).once('value', snap => {
-            const usersMulets = [];
-            const muletURL = snap.val().url;
-            usersMulets.push({muletURL})
-            console.log(muletURL);
-            this.setState({ usersMulets });
+          //  const usersMulets = [];
+            this.setState({myURL:snap.val().url});
+          //  usersMulets.push({muletURL})
+            //console.log(muletURL);
+          //  this.setState({ usersMulets });
         });
 
     }
-
+/*
     myFunction(){
         const { usersMulets } = this.state;
         return usersMulets.map((usersMulet) =>
             usersMulet.muletURL
         );
-    }
+    }*/
 
     render() {
 
@@ -71,8 +70,9 @@ export default class UserItem extends React.Component {
         return (
             <ListItem
                 primaryText={user.username}
-                leftAvatar={<Avatar src={this.myFunction()} />}
-                secondaryText={user.points}
+                leftAvatar={<Avatar src={this.state.myURL} />}
+              //  leftAvatar={<Avatar src={this.myFunction()} />}
+               secondaryText={user.points}
             />
         );
 

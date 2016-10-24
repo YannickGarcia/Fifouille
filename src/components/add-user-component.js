@@ -45,10 +45,11 @@ class AddUser extends Component {
         const { mulets } = this.state;
         // console.log(mulets[].available);
 
-        return mulets.map(mulet => {
+        return mulets.map((mulet, index) => {
             return (mulet.available
                 ? <MenuItem
                     value={mulet.key}
+                    key={index}
                     disabled={false}
                     primaryText={mulet.name}
                     children={<MuletVatar bgimg={mulet.url}/>}
@@ -56,6 +57,7 @@ class AddUser extends Component {
                 :
                 <MenuItem
                     value={mulet.key}
+                    key={index}
                     disabled={true}
                     primaryText={mulet.name}
                     children={<MuletVatar bgimg={mulet.url}/>}
