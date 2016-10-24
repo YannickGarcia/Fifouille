@@ -75,10 +75,12 @@ export default class UserItem extends React.Component {
               //  leftAvatar={<Avatar src={this.myFunction()} />}
                secondaryText={
                    'Pts: ' + user.points +
-                   ' - G: ' + user.gamesPlayed +
-                   ' W: ' + user.gamesWon +
-                   // ' D:' + user.gamesDraw +
-                   ' L: ' + user.gamesLost
+                   ' / G' + user.gamesPlayed +
+                   ' / W' + user.gamesWon +
+                   ' / D' + user.gamesDraw +
+                   ' / L' + user.gamesLost +
+                   ' / F' + user.goalsFor +
+                   ' / A' + user.goalsAgainst
 
                }
             />

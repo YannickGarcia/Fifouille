@@ -6,7 +6,7 @@ import TextField from 'material-ui/TextField';
 import MenuItem from 'material-ui/MenuItem';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import { gamesRef, timeRef, usersRef } from '../firebase-ref';
+import { gamesRef, timeRef, usersRef, rootRef } from '../firebase-ref';
 
 const styleList = {
     width: '100%'
@@ -82,23 +82,93 @@ class AddGame extends Component {
         //console.log(p1Score);
         if(p1Score > p2Score){
             this.setState({ p1Winner: true, p1Draw: false, p1Loser: false, p2Winner: false, p2Draw: false, p2Loser: true }, function () {
-                this.myFunctionPush();
+                this.pushTheGame();
+                this.p1Wins();
+
             });
 
         }else if(p1Score === p2Score){
             this.setState({ p1Winner: false, p1Draw: true, p1Loser: false, p2Winner: false, p2Draw: true, p2Loser: false }, function () {
-                this.myFunctionPush();
+                this.pushTheGame();
+                this.isDraw();
             });
         }else if(p1Score < p2Score){
             this.setState({ p1Winner: false, p1Draw: false, p1Loser: true, p2Winner: true, p2Draw: false, p2Loser: false }, function () {
-                this.myFunctionPush();
+                this.pushTheGame();
+                this.p2Wins();
             });
         }
 
 
     }
 
-    myFunctionPush(){
+    p1Wins(){
+        // Update des datas de P1
+        rootRef.child('users/' + this.state.p1Key).once('value', snap => {
+            const p1Wins = (snap.val().gamesWon) + 1;
+            const p1Games = (snap.val().gamesPlayed) + 1;
+            const p1GoalsFor = (snap.val().goalsFor) + Number(this.state.p1Score.trim());
+            const p1GoalsAgainst = (snap.val().goalsAgainst) + Number(this.state.p2Score.trim());
+            rootRef.child('users/' + this.state.p1Key).update({gamesWon: p1Wins, gamesPlayed: p1Games, goalsFor: p1GoalsFor, goalsAgainst: p1GoalsAgainst});
+            //console.log(p1Wins);
+        });
+
+        // Update des datas de P2
+        rootRef.child('users/' + this.state.p2Key).once('value', snap => {
+            const p2Lost = (snap.val().gamesLost) + 1;
+            const p2Games = (snap.val().gamesPlayed) + 1;
+            const p2GoalsFor = (snap.val().goalsFor) + Number(this.state.p2Score.trim());
+            const p2GoalsAgainst = (snap.val().goalsAgainst) + Number(this.state.p1Score.trim());
+            rootRef.child('users/' + this.state.p2Key).update({gamesLost: p2Lost, gamesPlayed: p2Games, goalsFor: p2GoalsFor, goalsAgainst: p2GoalsAgainst});
+            //console.log(p1Wins);
+        });
+    }
+
+    p2Wins(){
+        // Update des datas de P2
+        rootRef.child('users/' + this.state.p2Key).once('value', snap => {
+            const p2Wins = (snap.val().gamesWon) + 1;
+            const p2Games = (snap.val().gamesPlayed) + 1;
+            const p2GoalsFor = (snap.val().goalsFor) + Number(this.state.p2Score.trim());
+            const p2GoalsAgainst = (snap.val().goalsAgainst) + Number(this.state.p1Score.trim());
+            rootRef.child('users/' + this.state.p2Key).update({gamesWon: p2Wins, gamesPlayed: p2Games, goalsFor: p2GoalsFor, goalsAgainst: p2GoalsAgainst});
+            //console.log(p1Wins);
+        });
+
+        // Update des datas de P1
+        rootRef.child('users/' + this.state.p1Key).once('value', snap => {
+            const p1Lost = (snap.val().gamesLost) + 1;
+            const p1Games = (snap.val().gamesPlayed) + 1;
+            const p1GoalsFor = (snap.val().goalsFor) + Number(this.state.p1Score.trim());
+            const p1GoalsAgainst = (snap.val().goalsAgainst) + Number(this.state.p2Score.trim());
+            rootRef.child('users/' + this.state.p1Key).update({gamesLost: p1Lost, gamesPlayed: p1Games, goalsFor: p1GoalsFor, goalsAgainst: p1GoalsAgainst});
+            //console.log(p1Wins);
+        });
+    }
+
+    isDraw(){
+        // Update des datas de P2
+        rootRef.child('users/' + this.state.p2Key).once('value', snap => {
+            const p2Draw = (snap.val().gamesDraw) + 1;
+            const p2Games = (snap.val().gamesPlayed) + 1;
+            const p2GoalsFor = (snap.val().goalsFor) + Number(this.state.p2Score.trim());
+            const p2GoalsAgainst = (snap.val().goalsAgainst) + Number(this.state.p1Score.trim());
+            rootRef.child('users/' + this.state.p2Key).update({gamesDraw: p2Draw, gamesPlayed: p2Games, goalsFor: p2GoalsFor, goalsAgainst: p2GoalsAgainst});
+            //console.log(p1Wins);
+        });
+
+        // Update des datas de P1
+        rootRef.child('users/' + this.state.p1Key).once('value', snap => {
+            const p1Draw = (snap.val().gamesDraw) + 1;
+            const p1Games = (snap.val().gamesPlayed) + 1;
+            const p1GoalsFor = (snap.val().goalsFor) + Number(this.state.p1Score.trim());
+            const p1GoalsAgainst = (snap.val().goalsAgainst) + Number(this.state.p2Score.trim());
+            rootRef.child('users/' + this.state.p1Key).update({gamesDraw: p1Draw, gamesPlayed: p1Games, goalsFor: p1GoalsFor, goalsAgainst: p1GoalsAgainst});
+            //console.log(p1Wins);
+        });
+    }
+
+    pushTheGame(){
         const newGame = {
             p1Key:this.state.valuep1Key,
             p1Team:this.state.p1Team.trim(),
