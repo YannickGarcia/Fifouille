@@ -12,7 +12,8 @@ class MuletVatar extends Component {
                 backgroundSize: 'cover',
                 //float: 'left',
                 borderRadius: '50px',
-                margin: '5px 10px 0 0'
+                margin: '5px 10px 5px 0',
+                float:'left'
             }}>
 
             </div>

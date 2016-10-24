@@ -33,7 +33,7 @@ class GameList extends React.Component {
         } else if (games.length) {
             gameList = (<ul>{this.renderGames()}</ul>);
         } else {
-            gameList = (<div className="gameList-empty">No Speeds</div>);
+            gameList = (<div className="gameList-empty">No Games</div>);
         }
 
         return (
