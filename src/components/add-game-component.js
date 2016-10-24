@@ -26,6 +26,7 @@ class AddGame extends Component {
             p1Key:'',
             valuep1Key:'',
             p1Team:'',
+            valuep1Team:'',
             p1Score:'',
             p1Winner:'popo',
             p1Draw:'',
@@ -33,6 +34,7 @@ class AddGame extends Component {
             p2Key:'',
             valuep2Key:'',
             p2Team:'',
+            valuep2Team:'',
             p2Score:'',
             p2Winner:'',
             p2Draw:'',
@@ -78,6 +80,8 @@ class AddGame extends Component {
 
     handleChangeP1Key = (event, index, valuep1Key, evt) => this.setState({valuep1Key, p1Key: valuep1Key});
     handleChangeP2Key = (event, index, valuep2Key, evt) => this.setState({valuep2Key, p2Key: valuep2Key});
+    handleChangeP1Team = (event, index, valuep1Team, evt) => this.setState({valuep1Team, p1Team: valuep1Team});
+    handleChangeP2Team = (event, index, valuep2Team, evt) => this.setState({valuep2Team, p2Team: valuep2Team});
 
     handleSubmit(event) {
         event.preventDefault();
@@ -89,16 +93,17 @@ class AddGame extends Component {
         if(p1Score > p2Score){
             this.setState({ p1Winner: true, p1Draw: false, p1Loser: false, p2Winner: false, p2Draw: false, p2Loser: true }, function () {
                 this.pushTheGame();
-                this.p1Wins();
-                this.p1WinsRenderELO();
+                console.log('super');
+               this.p1Wins();
+               this.p1WinsRenderELO();
 
             });
 
         }else if(p1Score === p2Score){
             this.setState({ p1Winner: false, p1Draw: true, p1Loser: false, p2Winner: false, p2Draw: true, p2Loser: false }, function () {
-                this.pushTheGame();
-                this.isDraw();
-                this.p2WinsRenderELO();
+               this.pushTheGame();
+               this.isDraw();
+               this.p2WinsRenderELO();
             });
         }else if(p1Score < p2Score){
             this.setState({ p1Winner: false, p1Draw: false, p1Loser: true, p2Winner: true, p2Draw: false, p2Loser: false }, function () {
@@ -269,13 +274,13 @@ class AddGame extends Component {
     pushTheGame(){
         const newGame = {
             p1Key:this.state.valuep1Key,
-            p1Team:this.state.p1Team.trim(),
+            p1Team:this.state.p1Team,
             p1Score:this.state.p1Score.trim(),
             p1Winner:this.state.p1Winner,
             p1Draw:this.state.p1Draw,
             p1Loser:this.state.p1Loser,
             p2Key:this.state.valuep2Key,
-            p2Team:this.state.p2Team.trim(),
+            p2Team:this.state.p2Team,
             p2Score:this.state.p2Score.trim(),
             p2Winner:this.state.p2Winner,
             p2Draw:this.state.p2Draw,
@@ -293,6 +298,7 @@ class AddGame extends Component {
                 submitDisabled: false
             });
         }
+        this.handleRequestClose();
     }
 
     render(){
@@ -336,13 +342,18 @@ class AddGame extends Component {
                                     onChange={this.handleChangeP1Key}>
                                     {this.renderUsers()}
                                 </SelectField>
-                                <TextField
-                                    hintText=""
-                                    floatingLabelText="Team P1"
+                                <SelectField
+                                    value={this.state.valuep1Team}
                                     style={styleList}
-                                    onChange={(evt) => this.setState({ p1Team: evt.target.value })}
-                                    value={this.state.p1Team}
-                                />
+                                    floatingLabelText="Team P1"
+                                    onChange={this.handleChangeP1Team}>
+                                    <MenuItem value="Real Madrid" primaryText='Real Madrid'  />
+                                    <MenuItem value="Man. United" primaryText='Man. United'  />
+                                    <MenuItem value="Man. City" primaryText='Man. City'  />
+                                    <MenuItem value="Chelsea" primaryText='Chelsea'  />
+                                    <MenuItem value="Juventus" primaryText='Juventus'  />
+                                    <MenuItem value="FC Bayern" primaryText='FC Bayern'  />
+                                </SelectField>
                                 <TextField
                                     hintText=""
                                     floatingLabelText="Score P1"
@@ -360,13 +371,18 @@ class AddGame extends Component {
                                     onChange={this.handleChangeP2Key}>
                                     {this.renderUsers()}
                                 </SelectField>
-                            <TextField
-                                hintText=""
-                                floatingLabelText="Team P2"
-                                style={styleList}
-                                onChange={(evt) => this.setState({ p2Team: evt.target.value })}
-                                value={this.state.p2Team}
-                            />
+                                <SelectField
+                                    value={this.state.valuep2Team}
+                                    style={styleList}
+                                    floatingLabelText="Team P2"
+                                    onChange={this.handleChangeP2Team}>
+                                    <MenuItem value="Real Madrid" primaryText='Real Madrid'  />
+                                    <MenuItem value="Man. United" primaryText='Man. United'  />
+                                    <MenuItem value="Man. City" primaryText='Man. City'  />
+                                    <MenuItem value="Chelsea" primaryText='Chelsea'  />
+                                    <MenuItem value="Juventus" primaryText='Juventus'  />
+                                    <MenuItem value="FC Bayern" primaryText='FC Bayern'  />
+                                </SelectField>
                             <TextField
                                 hintText=""
                                 floatingLabelText="Score P2"
