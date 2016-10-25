@@ -182,8 +182,8 @@ class AddGame extends Component {
                         //console.log(getNewRatingP2);
 
                         // push in DB
-                        //rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
-                        //rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
+                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
+                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
                     });
                 });
 
