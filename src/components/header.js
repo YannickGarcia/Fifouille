@@ -1,20 +1,27 @@
 import React from 'react';
 import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
+import {grey800} from 'material-ui/styles/colors';
 
 
 
 const styles = {
   title: {
-    cursor: 'pointer',
+    //cursor: 'pointer',
+    color: grey800,
+    display:'block',
+    textAlign: 'center'
   },
+  appbar:{
+    backgroundColor: '#FFF',
+    boxShadow: '0,0,0'
+  }
 };
 
 const HeaderApp = () => (
   <AppBar
-    title={<span style={styles.title}>Fifa at Work</span>}
-    iconElementRight={<FlatButton label="Profile" />}
+    title={<span style={styles.title}>Offifa</span>}
     showMenuIconButton={false}
+    style={styles.appbar}
   />
 );
 

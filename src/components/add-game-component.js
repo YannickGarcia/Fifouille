@@ -299,11 +299,13 @@ class AddGame extends Component {
             });
         }
         this.handleRequestClose();
+        setTimeout(function(){ location.reload(); }, 500);
+
     }
 
     render(){
         const style = {
-            position: 'absolute',
+            position: 'fixed',
             bottom: 20,
             right: 20,
             zIndex: '100'

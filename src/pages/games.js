@@ -6,7 +6,7 @@ class Games extends Component {
 
     render() {
         return (
-            <div>
+            <div style={{padding:'0 15px'}}>
                 <GameList />
                 <div>
                     <AddGame />
