@@ -1,15 +1,15 @@
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
-import {grey900, grey600, grey500, cyan500} from 'material-ui/styles/colors';
+import {grey900, grey600, grey500, grey200, amber500} from 'material-ui/styles/colors';
 import { rootRef } from '../firebase-ref';
 
 
 const myStyle = {
-  marginBottom: 10,
+  marginBottom: 0,
   backgroundColor: 'white',
-  boxShadow: '0 0 6px rgba(0,0,0,.1)',
+    borderBottom: '1px solid' + grey200,
   display: 'flex',
-  padding: '12px'
+  padding: '16px 0'
 };
 const subNameStyle = {
   display: 'block',
@@ -79,7 +79,7 @@ export default class GameItem extends React.Component {
        
         const nameStyleP1 = {
           display: 'block',
-          color:  game.p1Winner ? cyan500 : grey900,
+          color:  game.p1Winner ? amber500 : grey900,
           fontWeight: '500',
           marginBottom:'2px',
           fontSize: '15px'
@@ -98,7 +98,7 @@ export default class GameItem extends React.Component {
        
         const nameStyleP2 = {
           display: 'block',
-          color:  game.p2Winner ? cyan500 : grey900,
+          color:  game.p2Winner ? amber500 : grey900,
           fontWeight: '500',
           marginBottom:'2px',
           fontSize: '15px'

@@ -3,6 +3,7 @@ import UserItem from './user-item-component';
 import {List} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import { usersRef } from '../firebase-ref';
+import AddUser from '../components/add-user-component';
 
 class userList extends React.Component {
 
@@ -42,8 +43,11 @@ class userList extends React.Component {
             <div className="userList">
 
                 <List>
-                    <Subheader>Group Players</Subheader>
+                    <Subheader>Group Players & Ranking</Subheader>
+                    <p style={{fontSize:'13px', color:'#999', padding:'0 15px'}}>Offifa is using the World Football ELO Rating System. Ratings for teams with fewer than 30 matches should be considered provisional.</p>
+                    <br/>
                     {myUserList}
+                    <AddUser/>
                 </List>
             </div>
         );

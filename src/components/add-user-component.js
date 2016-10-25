@@ -127,10 +127,13 @@ class AddUser extends Component {
         const newUser = {
             username: this.state.username.trim(),
             gamesLost: 0,
+            gamesDraw: 0,
             gamesPlayed: 0,
             gamesWon: 0,
+            goalsFor: 0,
+            goalsAgainst:0,
             muletKey: this.state.valueMulet,
-            points:1000,
+            points:0,
             groupKey: '-KUh54HpGOGP850b2Tpu'
         };
 
@@ -158,6 +161,12 @@ class AddUser extends Component {
 
             // on reset les champs
             this.setState({ username: '', submitDisabled: false, valueMulet: "-KUgtb6GaJBhj_8x1eJh", });
+
+            this.handleRequestClose();
+
+
+            setTimeout(function(){ location.reload(); }, 500);
+
         }
     }
 
@@ -198,7 +207,7 @@ class AddUser extends Component {
                 onTouchTap={this.handleRequestClose}
             />,
             <FlatButton
-                label="Submit"
+                label="Add"
                 primary={true}
                 disabled={this.state.submitDisabled}
                 onTouchTap={this.handleSubmit}
@@ -226,9 +235,7 @@ class AddUser extends Component {
                         {muletList}
                     </form>
                 </Dialog>
-                <FloatingActionButton style={style} onTouchTap={this.handleTouchTap}>
-                    <ContentAdd />
-                </FloatingActionButton>
+                <FlatButton primary={true} label="Add Player" onTouchTap={this.handleTouchTap} />
             </div>
         );
     }
