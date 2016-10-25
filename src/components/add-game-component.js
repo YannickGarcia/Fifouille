@@ -103,16 +103,15 @@ class AddGame extends Component {
             this.setState({ p1Winner: false, p1Draw: true, p1Loser: false, p2Winner: false, p2Draw: true, p2Loser: false }, function () {
                this.pushTheGame();
                this.isDraw();
-               this.p2WinsRenderELO();
+                this.isDrawRenderELO();
             });
         }else if(p1Score < p2Score){
             this.setState({ p1Winner: false, p1Draw: false, p1Loser: true, p2Winner: true, p2Draw: false, p2Loser: false }, function () {
                 this.pushTheGame();
                 this.p2Wins();
-                this.isDrawRenderELO();
+                this.p2WinsRenderELO();
             });
         }
-
 
     }
 
@@ -183,8 +182,8 @@ class AddGame extends Component {
                         //console.log(getNewRatingP2);
 
                         // push in DB
-                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
-                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
+                        //rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
+                        //rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
                     });
                 });
 
