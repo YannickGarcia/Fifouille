@@ -50,16 +50,19 @@ class Navigation extends Component {
                 containerElement={<Link to="/group"/>}
                 style={styles.tab}
             />
-            <Tab
-                label="Profile"
-                containerElement={<Link to="/profile"/>}
-                style={styles.tab}
-            />
         </Tabs>
     );
   }
 
 
 }
+
+/*
+ <Tab
+ label="Profile"
+ containerElement={<Link to="/profile"/>}
+ style={styles.tab}
+ />
+ */
 
 export default Navigation;
