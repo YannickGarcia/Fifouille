@@ -335,6 +335,7 @@ class AddGame extends Component {
                 >
 
                     <form onSubmit={this.handleSubmit.bind(this)} className="TaskInput-form">
+                        <h4>Don't add fake games</h4>
                         <div style={{display:'flex', marginRight:7}}>
                             <div style={{flex:'1 1 0%'}}>
                                 <SelectField

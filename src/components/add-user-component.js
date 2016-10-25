@@ -225,7 +225,7 @@ class AddUser extends Component {
 
 
                     <form onSubmit={this.handleSubmit} className="TaskInput-form">
-
+                        <h4>Don't add fake Users</h4>
                         <TextField
                             hintText=""
                             floatingLabelText="Player Name"
