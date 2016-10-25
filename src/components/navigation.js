@@ -32,10 +32,8 @@ class Navigation extends Component {
       let tabSelect;
       if (location.pathname === "/") {
           tabSelect = 0;
-      } else if (location.pathname.match(/^\/profile/)) {
-          tabSelect = 1;
       } else if (location.pathname.match(/^\/group/)){
-          tabSelect = 2;
+          tabSelect = 1;
       }
 
     return (
