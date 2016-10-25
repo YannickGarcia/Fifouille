@@ -9,7 +9,11 @@ const styles = {
     //cursor: 'pointer',
     color: grey800,
     display:'block',
-    textAlign: 'center'
+    textAlign: 'center',
+    fontSize:'16px',
+    textTransform:'uppercase',
+    letterSpacing:'2px',
+    fontWeight:'600'
   },
   appbar:{
     backgroundColor: '#FFF',
