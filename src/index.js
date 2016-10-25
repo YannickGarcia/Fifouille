@@ -7,7 +7,6 @@ import './index.css';
 import App from './App';
 
 import Games from './pages/games';
-import Ranking from './pages/ranking';
 import Group from './pages/group';
 import Profile from './pages/profile';
 
@@ -19,7 +18,6 @@ ReactDOM.render(
   <Router history={hashHistory}>
       <Route path="/" component={App}>
           <IndexRoute component={Games}></IndexRoute>
-          <Route path="ranking" component={Ranking}></Route>
           <Route path="group" component={Group}></Route>
           <Route path="profile" component={Profile}></Route>
       </Route>

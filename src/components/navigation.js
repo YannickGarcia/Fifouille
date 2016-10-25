@@ -1,14 +1,6 @@
 import React, { Component } from 'react';
 import { IndexLink, Link  } from "react-router";
 import {Tabs, Tab} from 'material-ui/Tabs';
-import IconStar from 'material-ui/svg-icons/action/stars';
-import IconList from 'material-ui/svg-icons/action/list';
-import IconGroup from 'material-ui/svg-icons/action/group-work';
-
-
-const gamesIcon = <IconList />;
-const rankingIcon = <IconStar />;
-const groupIcon = <IconGroup />;
 
 
 class Navigation extends Component {
@@ -20,7 +12,7 @@ class Navigation extends Component {
       let tabSelect;
       if (location.pathname === "/") {
           tabSelect = 0;
-      } else if (location.pathname.match(/^\/ranking/)) {
+      } else if (location.pathname.match(/^\/profile/)) {
           tabSelect = 1;
       } else if (location.pathname.match(/^\/group/)){
           tabSelect = 2;
@@ -29,19 +21,16 @@ class Navigation extends Component {
     return (
         <Tabs initialSelectedIndex={tabSelect}>
             <Tab
-                icon={gamesIcon}
-                label="GAMES"
+                label="Games"
                 containerElement={<IndexLink to="/"/>}
             />
             <Tab
-                icon={rankingIcon}
-                label="RANKING"
-                containerElement={<Link to="/ranking"/>}
+                label="Group"
+                containerElement={<Link to="/group"/>}
             />
             <Tab
-                icon={groupIcon}
-                label="GROUP"
-                containerElement={<Link to="/group"/>}
+                label="Profile"
+                containerElement={<Link to="/profile"/>}
             />
         </Tabs>
     );
