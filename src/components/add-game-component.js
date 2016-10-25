@@ -167,23 +167,30 @@ class AddGame extends Component {
         //récup des points de P2
         rootRef.child('users/' + this.state.p2Key).once('value', snap => {
             this.setState({p2Points:snap.val().points}, function () {
-                //récup des points de P2
+                //récup des points de P1
                 rootRef.child('users/' + this.state.p1Key).once('value', snap => {
                     this.setState({p1Points:snap.val().points}, function () {
-                        const diffRating =  Number(this.state.p1Points) - Number(this.state.p2Points);
-                        const myChanceToWin = 1 / (Math.pow(10, diffRating / 400) + 1);
-                        const getRatingDelta =  Math.round(40 * (0.5 - myChanceToWin)); // 1 because win
-                        const getNewRating = Number(this.state.p2Points) + getRatingDelta;
-                        console.log(getNewRating);
+                        const diffRatingP1 =  Number(this.state.p1Points) - Number(this.state.p2Points);
+                        const myChanceToWinP1 = 1 / (Math.pow(10, diffRatingP1 / 400) + 1);
+                        const getRatingDeltaP1 =  Math.round(40 * (0.5 - myChanceToWinP1)); // 0.5 because draw
+                        const getNewRatingP1 = Number(this.state.p1Points) + getRatingDeltaP1;
+
+
+                        const diffRatingP2 =  Number(this.state.p2Points) - Number(this.state.p1Points);
+                        const myChanceToWinP2 = 1 / (Math.pow(10, diffRatingP2 / 400) + 1);
+                        const getRatingDeltaP2 =  Math.round(40 * (0.5 - myChanceToWinP2)); // 0.5 because draw
+                        const getNewRatingP2 = Number(this.state.p2Points) + getRatingDeltaP2;
+                        //console.log(getNewRatingP2);
 
                         // push in DB
-                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRating});
+                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
+                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
                     });
                 });
 
             });
         });
-
+/*
         //récup des points de P1
         rootRef.child('users/' + this.state.p1Key).once('value', snap => {
             this.setState({p1Points:snap.val().points}, function () {
@@ -203,6 +210,7 @@ class AddGame extends Component {
 
             });
         });
+        */
     }
 
     p1Wins(){
