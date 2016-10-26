@@ -169,17 +169,16 @@ class AddGame extends Component {
                 //récup des points de P1
                 rootRef.child('users/' + this.state.p1Key).once('value', snap => {
                     this.setState({p1Points:snap.val().points}, function () {
-                        const diffRatingP1 =  Number(this.state.p1Points) - Number(this.state.p2Points);
+                        const diffRatingP1 =  Number(this.state.p2Points) - Number(this.state.p1Points);
                         const myChanceToWinP1 = 1 / (Math.pow(10, diffRatingP1 / 400) + 1);
                         const getRatingDeltaP1 =  Math.round(40 * (0.5 - myChanceToWinP1)); // 0.5 because draw
                         const getNewRatingP1 = Number(this.state.p1Points) + getRatingDeltaP1;
 
 
-                        const diffRatingP2 =  Number(this.state.p2Points) - Number(this.state.p1Points);
+                        const diffRatingP2 =  Number(this.state.p1Points) - Number(this.state.p2Points);
                         const myChanceToWinP2 = 1 / (Math.pow(10, diffRatingP2 / 400) + 1);
                         const getRatingDeltaP2 =  Math.round(40 * (0.5 - myChanceToWinP2)); // 0.5 because draw
                         const getNewRatingP2 = Number(this.state.p2Points) + getRatingDeltaP2;
-                        //console.log(getNewRatingP2);
 
                         // push in DB
                         rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});

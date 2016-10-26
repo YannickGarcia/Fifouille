@@ -2,6 +2,7 @@ import * as firebase from 'firebase';
 
 // Initialize Firebase
 
+
  // DB PROD
  const config = {
  apiKey: "AIzaSyCQ-Ki-mSuqsRbqsMfXOUTDySBqYW3xWgs",
