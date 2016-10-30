@@ -362,6 +362,7 @@ class AddGame extends Component {
                                     <MenuItem value="Chelsea" primaryText='Chelsea'  />
                                     <MenuItem value="Juventus" primaryText='Juventus'  />
                                     <MenuItem value="FC Bayern" primaryText='FC Bayern'  />
+                                    <MenuItem value="Paris SG" primaryText='Paris SG'  />
                                 </SelectField>
                                 <TextField
                                     hintText=""
@@ -391,6 +392,7 @@ class AddGame extends Component {
                                     <MenuItem value="Chelsea" primaryText='Chelsea'  />
                                     <MenuItem value="Juventus" primaryText='Juventus'  />
                                     <MenuItem value="FC Bayern" primaryText='FC Bayern'  />
+                                    <MenuItem value="Paris SG" primaryText='Paris SG'  />
                                 </SelectField>
                             <TextField
                                 hintText=""

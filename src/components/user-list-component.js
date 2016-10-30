@@ -13,7 +13,7 @@ class userList extends React.Component {
     }
 
     componentDidMount(){
-        usersRef.on('value', snap => {
+        usersRef.orderByChild('points').on('value', snap => {
             const users = [];
             snap.forEach(shot => {
                 users.push({ ...shot.val(), key: shot.key });
@@ -24,7 +24,7 @@ class userList extends React.Component {
 
     renderUsers(){
         const { users } = this.state;
-        return users.map((user) => <UserItem key={user.key} user={user} />);
+        return users.map((user) => <UserItem key={user.key} user={user} />).reverse();
     }
 
     render() {
