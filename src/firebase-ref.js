@@ -12,6 +12,7 @@ import * as firebase from 'firebase';
  messagingSenderId: "671212363239"
  };
 
+
 /*
 // DB DEV
  const config = {
@@ -22,7 +23,6 @@ import * as firebase from 'firebase';
      messagingSenderId: "733443285053"
  };
 */
-
 firebase.initializeApp(config);
 
 

@@ -1,5 +1,6 @@
 import React from 'react';
 import Avatar from 'material-ui/Avatar';
+import moment from 'moment';
 import {grey900, grey600, grey500, grey200, amber500} from 'material-ui/styles/colors';
 import { rootRef } from '../firebase-ref';
 
@@ -132,7 +133,7 @@ export default class GameItem extends React.Component {
               <span style={scoreStyle}>{game.p1Score}</span>
               <span style={scoreStyle}> - </span>
               <span style={scoreStyle}>{game.p2Score}</span>
-              <span style={dateStyle}>{game.date}</span>
+              <span style={dateStyle}>{moment(game.timeStamp).format("DD MMM")}</span>
             </div>
 
             <div style={{flex:'1'}}>

@@ -21,7 +21,7 @@ class GameList extends React.Component {
 
     renderGames(){
         const { games } = this.state;
-        return games.map((game) => <GameItem key={game.key} game={game} />);
+        return games.map((game) => <GameItem key={game.key} game={game} />).reverse();
     }
 
     render() {
