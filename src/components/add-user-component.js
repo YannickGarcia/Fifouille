@@ -1,11 +1,11 @@
 import React, {Component} from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-import FloatingActionButton from 'material-ui/FloatingActionButton';
+//import FloatingActionButton from 'material-ui/FloatingActionButton';
 import TextField from 'material-ui/TextField';
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
-import ContentAdd from 'material-ui/svg-icons/content/add';
+//import ContentAdd from 'material-ui/svg-icons/content/add';
 import { rootRef, usersRef, muletsRef } from '../firebase-ref';
 import MuletVatar from './mulet-vatar';
 
@@ -171,12 +171,12 @@ class AddUser extends Component {
     }
 
     render(){
-        const style = {
+        /*const style = {
             position: 'absolute',
             bottom: 20,
             right: 20,
             zIndex: '100'
-        };
+        };*/
 
         /*const options = [
             { value: 'one', label: 'One' },

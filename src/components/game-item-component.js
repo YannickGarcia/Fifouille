@@ -92,10 +92,7 @@ export default class GameItem extends React.Component {
     }
 
     renderNameP2() {
-
         const { game } = this.props;
-
-        //const { p2Winner } = this.props;
        
         const nameStyleP2 = {
           display: 'block',
@@ -108,6 +105,32 @@ export default class GameItem extends React.Component {
         return (
            <span style={nameStyleP2}>{this.state.player2Name}</span>
         );
+    }
+
+    renderPointsP1(){
+        const { game } = this.props;
+        if(game.p1GamePts > 0){
+            return(<span>+{game.p1GamePts} pts</span>);
+        }else if(game.p1GamePts < 0){
+            return(<span>-{game.p1GamePts} pts</span>);
+        }else if(game.p1GamePts === 0){
+            return(<span>0 pts</span>);
+        }else{
+            return("");
+        }
+    }
+
+    renderPointsP2(){
+        const { game } = this.props;
+        if(game.p2GamePts > 0){
+            return(<span>+{game.p2GamePts} pts</span>);
+        }else if(game.p2GamePts < 0){
+            return(<span>-{game.p2GamePts} pts</span>);
+        }else if(game.p2GamePts === 0){
+            return(<span>0 pts</span>);
+        }else{
+            return("");
+        }
     }
 
   render() {
@@ -123,9 +146,10 @@ export default class GameItem extends React.Component {
                   size={40}
                   style={{margin: '0px', float:'left'}}
                 />
-                <div style={{float: 'left', padding:'4px 0 0 10px'}}>
+                <div style={{float: 'left', padding:'0 0 0 10px'}}>
                   {this.renderNameP1()}
-                  <span style={subNameStyle}>{game.p1Team}</span>
+                    <span style={subNameStyle}>{game.p1Team}</span>
+                    <span style={subNameStyle}>{this.renderPointsP1()}</span>
                 </div>
             </div>
 
@@ -142,9 +166,10 @@ export default class GameItem extends React.Component {
                   size={40}
                   style={{margin: '0px', float:'right'}}
                 />
-                <div style={{float: 'right', padding:'4px 10px 0 0', textAlign:'right'}}>
+                <div style={{float: 'right', padding:'0 10px 0 0', textAlign:'right'}}>
                   {this.renderNameP2()}
                   <span style={subNameStyle}>{game.p2Team}</span>
+                    <span style={subNameStyle}>{this.renderPointsP2()}</span>
                 </div>
             </div>
 
