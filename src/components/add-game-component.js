@@ -323,7 +323,7 @@ class AddGame extends Component {
             });
         }
         this.handleRequestClose();
-        //setTimeout(function(){ location.reload(); }, 500);
+        setTimeout(function(){ location.reload(); }, 500);
 
     }
 
