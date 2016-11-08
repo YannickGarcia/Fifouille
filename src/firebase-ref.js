@@ -11,7 +11,7 @@ import * as firebase from 'firebase';
  storageBucket: "fifouille-5dccb.appspot.com",
  messagingSenderId: "671212363239"
  };
-/* SUPER 5
+/* SUPER 6
 
 // DB DEV
  const config = {
