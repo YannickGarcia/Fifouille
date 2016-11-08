@@ -78,7 +78,7 @@ class AddUser extends Component {
                         disabled={true}
                         innerDivStyle={menuItemStyle}
                         primaryText={mulet.name}
-                        children={<MuletVatar bgimg={mulet.url}/>}
+                        children={<MuletVatar bgimg={mulet.urlLocal}/>}
                     />
                     )
                 }
