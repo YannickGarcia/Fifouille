@@ -61,7 +61,7 @@ class AddUser extends Component {
                             key={index}
                             disabled={false}
                             primaryText={mulet.name}
-                            children={<MuletVatar bgimg={mulet.url}/>}
+                            children={<MuletVatar bgimg={mulet.urlLocal}/>}
                         />
                     )
                 }

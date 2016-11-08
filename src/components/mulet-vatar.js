@@ -8,7 +8,7 @@ class MuletVatar extends Component {
             <div style={{
                 width:80,
                 height:80,
-                background: 'transparent url(' + this.props.bgimg + ') no-repeat center center',
+                background: 'transparent url(./muletvatars/' + this.props.bgimg + ') no-repeat center center',
                 backgroundSize: 'cover',
                 //float: 'left',
                 borderRadius: '50px',

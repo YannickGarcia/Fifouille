@@ -22,6 +22,7 @@ import * as firebase from 'firebase';
      messagingSenderId: "733443285053"
  };
 */
+
 firebase.initializeApp(config);
 
 

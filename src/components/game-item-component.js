@@ -55,7 +55,7 @@ export default class GameItem extends React.Component {
             this.setState({player1Name:snap.val().username});
             // Grab mulet :D
             rootRef.child('muletvatars/' + snap.val().muletKey).once('value', snap => {
-                this.setState({player1Mulet:snap.val().url});
+                this.setState({player1Mulet:'./muletvatars/' + snap.val().urlLocal});
             });
         });
 
@@ -65,7 +65,7 @@ export default class GameItem extends React.Component {
             this.setState({player2Name:snap.val().username});
             // Grab mulet :D
             rootRef.child('muletvatars/' + snap.val().muletKey).once('value', snap => {
-                this.setState({player2Mulet:snap.val().url});
+                this.setState({player2Mulet:'./muletvatars/' + snap.val().urlLocal});
             });
         });
 
@@ -142,6 +142,7 @@ export default class GameItem extends React.Component {
 
             <div style={{flex:'1'}}>
               <Avatar
+                  //src={this.state.player1Mulet}
                   src={this.state.player1Mulet}
                   size={40}
                   style={{margin: '0px', float:'left'}}

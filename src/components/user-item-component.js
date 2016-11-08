@@ -49,7 +49,7 @@ export default class UserItem extends React.Component {
         const muletKey = user.muletKey;
         rootRef.child('muletvatars/' + muletKey).once('value', snap => {
           //  const usersMulets = [];
-            this.setState({myURL:snap.val().url});
+            this.setState({myURL:'./muletvatars/' + snap.val().urlLocal});
           //  usersMulets.push({muletURL})
             //console.log(muletURL);
           //  this.setState({ usersMulets });
