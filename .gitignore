@@ -15,4 +15,4 @@ build
 npm-debug.log
 .idea/workspace.xml
 
-.Fifouille/src/firebase-ref.js
+Fifouille/src/firebase-ref.js
