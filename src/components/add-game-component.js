@@ -384,6 +384,7 @@ class AddGame extends Component {
                                 </SelectField>
                                 <TextField
                                     hintText=""
+                                    type="tel"
                                     floatingLabelText="Score P1"
                                     style={styleList}
                                     onChange={(evt) => this.setState({ p1Score: evt.target.value })}
@@ -414,6 +415,7 @@ class AddGame extends Component {
                                 </SelectField>
                                 <TextField
                                     hintText=""
+                                    type="tel"
                                     floatingLabelText="Score P2"
                                     style={styleList}
                                     onChange={(evt) => this.setState({ p2Score: evt.target.value })}
