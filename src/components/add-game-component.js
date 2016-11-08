@@ -26,7 +26,7 @@ class AddGame extends Component {
             p1Key:'',
             valuep1Key:'',
             p1Team:'',
-            valuep1Team:'',
+            p1TeamVisible: false,
             p1Score:'',
             p1Winner:'popo',
             p1Draw:'',
@@ -35,7 +35,7 @@ class AddGame extends Component {
             p2Key:'',
             valuep2Key:'',
             p2Team:'',
-            valuep2Team:'',
+            p2TeamVisible: false,
             p2Score:'',
             p2Winner:'',
             p2Draw:'',
@@ -46,7 +46,9 @@ class AddGame extends Component {
             p2Points:'',
             p2PointsNew:'',
             p2NewPoints: '',
-            goalDif:''
+            goalDif:'',
+            scoreP1Viz:false,
+            scoreP2Viz: false
 
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -79,11 +81,87 @@ class AddGame extends Component {
         return users.map((user) => <MenuItem key={user.key} value={user.key} primaryText={user.username} />);
     }
 
+    renderP1Team(){
+        if(this.state.p1TeamVisible){
+            return(
+                <TextField
+                    hintText=""
+                    style={styleList}
+                    onChange={(evt) => this.setState({ p1Team: evt.target.value })}
+                    value={this.state.p1Team}
+                />
+            );
+        }
+    }
 
-    handleChangeP1Key = (event, index, valuep1Key, evt) => this.setState({valuep1Key, p1Key: valuep1Key});
-    handleChangeP2Key = (event, index, valuep2Key, evt) => this.setState({valuep2Key, p2Key: valuep2Key});
+    renderP2Team(){
+        if(this.state.p2TeamVisible){
+            return(
+                <TextField
+                    hintText=""
+                    style={styleList}
+                    onChange={(evt) => this.setState({ p2Team: evt.target.value })}
+                    value={this.state.p2Team}
+                />
+            );
+        }
+    }
+
+    renderP1Score(){
+        if(this.state.scoreP1Viz && this.state.scoreP2Viz){
+            return(
+                <TextField
+                    hintText=""
+                    type="tel"
+                    floatingLabelText="Score Player 1"
+                    maxLength="2"
+                    style={styleList}
+                    onChange={(evt) => this.setState({ p1Score: evt.target.value })}
+                    value={this.state.p1Score}
+                />
+            );
+        }
+    }
+
+    renderP2Score(){
+        if(this.state.scoreP1Viz && this.state.scoreP2Viz){
+            return(
+                <TextField
+                    hintText=""
+                    type="tel"
+                    floatingLabelText="Score Player 2"
+                    maxLength="2"
+                    style={styleList}
+                    onChange={(evt) => this.setState({ p2Score: evt.target.value })}
+                    value={this.state.p2Score}
+                />
+            );
+        }
+    }
+
+
+    handleChangeP1Key = (event, index, valuep1Key, evt) => {this.setState({valuep1Key, p1Key: valuep1Key}, function(){
+        rootRef.child('users/' + this.state.p1Key).once('value', snap => {
+            this.setState({p1Team: snap.val().favTeam, p1TeamVisible:true, scoreP1Viz:true}, function(){
+                console.log('super1');
+            });
+
+        });
+    })};
+
+    handleChangeP2Key = (event, index, valuep2Key, evt) => {this.setState({valuep2Key, p2Key: valuep2Key}, function(){
+        rootRef.child('users/' + this.state.p2Key).once('value', snap => {
+            this.setState({p2Team: snap.val().favTeam, p2TeamVisible:true, scoreP2Viz:true }, function(){
+                console.log('super2');
+            });
+
+        });
+    })};
+
+    //handleChangeP2Key = (event, index, valuep2Key, evt) => this.setState({valuep2Key, p2Key: valuep2Key});
     handleChangeP1Team = (event, index, valuep1Team, evt) => this.setState({valuep1Team, p1Team: valuep1Team});
     handleChangeP2Team = (event, index, valuep2Team, evt) => this.setState({valuep2Team, p2Team: valuep2Team});
+
 
     handleSubmit(event) {
         event.preventDefault();
@@ -312,8 +390,9 @@ class AddGame extends Component {
             timeStamp:timeRef,
             groupKey: '-KUh54HpGOGP850b2Tpu'
         };
-        if (newGame.p1Team.length) {
+        if (newGame.p1Score.length) {
             gamesRef.push(newGame);
+            console.log('new game pushed');
             this.setState({
                 p1Team: '',
                 p2Team: '',
@@ -369,7 +448,7 @@ class AddGame extends Component {
                                     onChange={this.handleChangeP1Key}>
                                     {this.renderUsers()}
                                 </SelectField>
-                                <SelectField
+                                {/*<SelectField
                                     value={this.state.valuep1Team}
                                     style={styleList}
                                     floatingLabelText="Team P1"
@@ -381,15 +460,9 @@ class AddGame extends Component {
                                     <MenuItem value="Juventus" primaryText='Juventus'  />
                                     <MenuItem value="FC Bayern" primaryText='FC Bayern'  />
                                     <MenuItem value="Paris SG" primaryText='Paris SG'  />
-                                </SelectField>
-                                <TextField
-                                    hintText=""
-                                    type="tel"
-                                    floatingLabelText="Score P1"
-                                    style={styleList}
-                                    onChange={(evt) => this.setState({ p1Score: evt.target.value })}
-                                    value={this.state.p1Score}
-                                />
+                                </SelectField>*/}
+                                {this.renderP1Team()}
+                                {this.renderP1Score()}
 
                             </div>
                             <div style={{flex:'1 1 0%', paddingLeft:7}}>
@@ -400,7 +473,7 @@ class AddGame extends Component {
                                     onChange={this.handleChangeP2Key}>
                                     {this.renderUsers()}
                                 </SelectField>
-                                <SelectField
+                                {/*<SelectField
                                     value={this.state.valuep2Team}
                                     style={styleList}
                                     floatingLabelText="Team P2"
@@ -412,15 +485,9 @@ class AddGame extends Component {
                                     <MenuItem value="Juventus" primaryText='Juventus'  />
                                     <MenuItem value="FC Bayern" primaryText='FC Bayern'  />
                                     <MenuItem value="Paris SG" primaryText='Paris SG'  />
-                                </SelectField>
-                                <TextField
-                                    hintText=""
-                                    type="tel"
-                                    floatingLabelText="Score P2"
-                                    style={styleList}
-                                    onChange={(evt) => this.setState({ p2Score: evt.target.value })}
-                                    value={this.state.p2Score}
-                                />
+                                </SelectField>*/}
+                                {this.renderP2Team()}
+                                {this.renderP2Score()}
                             </div>
 
                         </div>

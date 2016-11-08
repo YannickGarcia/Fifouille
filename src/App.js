@@ -24,7 +24,7 @@ render() {
       <div className="App" style={{height: '100%'}}>
         <MuiThemeProvider  muiTheme={muiTheme}>
           <div>
-            <div style={{position: 'fixed', top: '0', width: '100%'}}>
+            <div style={{position: 'fixed', top: '0', width: '100%', zIndex:'100'}}>
             <HeaderApp />
             <Navigation location={location}/>
             </div>

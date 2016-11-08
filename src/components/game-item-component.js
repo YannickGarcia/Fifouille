@@ -112,7 +112,7 @@ export default class GameItem extends React.Component {
         if(game.p1GamePts > 0){
             return(<span>+{game.p1GamePts} pts</span>);
         }else if(game.p1GamePts < 0){
-            return(<span>-{game.p1GamePts} pts</span>);
+            return(<span>{game.p1GamePts} pts</span>);
         }else if(game.p1GamePts === 0){
             return(<span>0 pts</span>);
         }else{
@@ -125,7 +125,7 @@ export default class GameItem extends React.Component {
         if(game.p2GamePts > 0){
             return(<span>+{game.p2GamePts} pts</span>);
         }else if(game.p2GamePts < 0){
-            return(<span>-{game.p2GamePts} pts</span>);
+            return(<span>{game.p2GamePts} pts</span>);
         }else if(game.p2GamePts === 0){
             return(<span>0 pts</span>);
         }else{
