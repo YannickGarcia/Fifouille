@@ -10,7 +10,7 @@ class GameList extends React.Component {
     }
 
     componentDidMount(){
-        gamesRef.on('value', snap => {
+        gamesRef.limitToLast(10).on('value', snap => {
             const games = [];
             snap.forEach(shot => {
                 games.push({ ...shot.val(), key: shot.key });
