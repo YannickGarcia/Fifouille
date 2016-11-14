@@ -426,6 +426,9 @@ class AddGame extends Component {
             right: 20,
             zIndex: '100'
         };
+        const styleDialog = {
+            top: '-130px'
+        }
         const standardActions = [
             <FlatButton
                 label="Cancel"
@@ -448,6 +451,7 @@ class AddGame extends Component {
                     title="Add Game"
                     actions={standardActions}
                     onRequestClose={this.handleRequestClose}
+                    style={styleDialog}
                 >
 
                     <form onSubmit={this.handleSubmit.bind(this)} className="TaskInput-form">
