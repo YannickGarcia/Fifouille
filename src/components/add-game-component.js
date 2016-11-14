@@ -46,10 +46,9 @@ class AddGame extends Component {
             p2Points:'',
             p2PointsNew:'',
             p2NewPoints: '',
-            goalDif:'',
             scoreP1Viz:false,
             scoreP2Viz: false,
-            Kfactor:0
+            errorMsg:''
 
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -66,6 +65,7 @@ class AddGame extends Component {
             open: true,
         });
     }
+
 
     componentDidMount(){
         usersRef.on('value', snap => {
@@ -86,7 +86,7 @@ class AddGame extends Component {
         if(this.state.p1TeamVisible){
             return(
                 <TextField
-                    hintText=""
+                    hintText="P2 Team"
                     style={styleList}
                     onChange={(evt) => this.setState({ p1Team: evt.target.value })}
                     value={this.state.p1Team}
@@ -100,7 +100,7 @@ class AddGame extends Component {
         if(this.state.p2TeamVisible){
             return(
                 <TextField
-                    hintText=""
+                    hintText="P1 Team"
                     style={styleList}
                     onChange={(evt) => this.setState({ p2Team: evt.target.value })}
                     value={this.state.p2Team}
@@ -114,7 +114,7 @@ class AddGame extends Component {
         if(this.state.scoreP1Viz && this.state.scoreP2Viz){
             return(
                 <TextField
-                    hintText=""
+                    hintText="Score Player 1"
                     type="tel"
                     floatingLabelText="Score Player 1"
                     maxLength="2"
@@ -131,7 +131,7 @@ class AddGame extends Component {
         if(this.state.scoreP1Viz && this.state.scoreP2Viz){
             return(
                 <TextField
-                    hintText=""
+                    hintText="Score Player 2"
                     type="tel"
                     floatingLabelText="Score Player 2"
                     maxLength="2"
@@ -168,31 +168,62 @@ class AddGame extends Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        const regexp = /^\d+$/;
+        if (regexp.test(this.state.p1Score) && regexp.test(this.state.p2Score)) {
 
-        const p1Score = this.state.p1Score.trim();
-        const p2Score = this.state.p2Score.trim();
 
-        //console.log(p1Score);
-        if(p1Score > p2Score){
-            this.setState({ p1Winner: true, p1Draw: false, p1Loser: false, p2Winner: false, p2Draw: false, p2Loser: true }, function () {
-                this.p1Wins();
-                this.p1WinsRenderELO();
-            });
+            if (this.state.p1Key.length && this.state.p2Key.length && this.state.p1Team.length && this.state.p2Team.length) {
 
-        }else if(p1Score === p2Score){
-            this.setState({ p1Winner: false, p1Draw: true, p1Loser: false, p2Winner: false, p2Draw: true, p2Loser: false }, function () {
-                //this.pushTheGame();
-                this.isDraw();
-                this.isDrawRenderELO();
-            });
-        }else if(p1Score < p2Score){
-            this.setState({ p1Winner: false, p1Draw: false, p1Loser: true, p2Winner: true, p2Draw: false, p2Loser: false }, function () {
-                //this.pushTheGame();
-                this.p2Wins();
-                this.p2WinsRenderELO();
-            });
+                const p1Score = this.state.p1Score.trim();
+                const p2Score = this.state.p2Score.trim();
+
+                //console.log(p1Score);
+                if (p1Score > p2Score) {
+                    this.setState({
+                        p1Winner: true,
+                        p1Draw: false,
+                        p1Loser: false,
+                        p2Winner: false,
+                        p2Draw: false,
+                        p2Loser: true
+                    }, function () {
+                        this.p1Wins();
+                        this.p1WinsRenderELO();
+                    });
+
+                } else if (p1Score === p2Score) {
+                    this.setState({
+                        p1Winner: false,
+                        p1Draw: true,
+                        p1Loser: false,
+                        p2Winner: false,
+                        p2Draw: true,
+                        p2Loser: false
+                    }, function () {
+                        //this.pushTheGame();
+                        this.isDraw();
+                        this.isDrawRenderELO();
+                    });
+                } else if (p1Score < p2Score) {
+                    this.setState({
+                        p1Winner: false,
+                        p1Draw: false,
+                        p1Loser: true,
+                        p2Winner: true,
+                        p2Draw: false,
+                        p2Loser: false
+                    }, function () {
+                        //this.pushTheGame();
+                        this.p2Wins();
+                        this.p2WinsRenderELO();
+                    });
+                }
+            } else {
+                this.setState({errorMsg: 'Form uncompleted'})
+            }
+        } else {
+            this.setState({errorMsg: 'Scores are not integer numbers'})
         }
-
     }
 
     p1WinsRenderELO(){
@@ -228,6 +259,9 @@ class AddGame extends Component {
                         // push scores in DB
                         rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1 < 0 ? 0 : getNewRatingP1});
                         rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2 < 0 ? 0 : getNewRatingP2});
+
+                        console.log('P1 Points Before: '+this.state.p1Points + ', P1 Points After: '+getNewRatingP1);
+                        console.log('P2 Points Before: '+this.state.p2Points + ', P2 Points After: '+getNewRatingP2);
 
                         this.pushTheGame(getRatingDelta,getRatingDeltaP2);
 
@@ -268,14 +302,18 @@ class AddGame extends Component {
 
                         const diffRatingP1 =  Number(this.state.p2Points) - Number(this.state.p1Points);
                         const myChanceToWinP1 = 1 / (Math.pow(10, diffRatingP1 / 400) + 1);
-                        const getRatingDeltaP1 =  Math.round(40 * (0 - myChanceToWinP1)); // 0 because lost
+                        const getRatingDeltaP1 =  Math.round(kFactor * (0 - myChanceToWinP1)); // 0 because lost
                         const getNewRatingP1 = Number(this.state.p1Points) + getRatingDeltaP1;
 
                         // push scores in DB
                         rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1 < 0 ? 0 : getNewRatingP1});
                         rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2 < 0 ? 0 : getNewRatingP2});
 
+                        console.log('P1 Points Before: '+this.state.p1Points + ', P1 Points After: '+getNewRatingP1);
+                        console.log('P2 Points Before: '+this.state.p1Points + ', P2 Points After: '+getNewRatingP2);
+
                         this.pushTheGame(getRatingDeltaP1, getRatingDelta);
+
 
                         // push in DB
                         rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
@@ -309,6 +347,9 @@ class AddGame extends Component {
                         rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1 < 0 ? 0 : getNewRatingP1});
                         rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2 < 0 ? 0 : getNewRatingP2});
 
+                        console.log('P1 Points Before: '+this.state.p1Points + ', P1 Points After: '+getNewRatingP1);
+                        console.log('P2 Points Before: '+this.state.p1Points + ', P2 Points After: '+getNewRatingP2);
+
                         this.pushTheGame(getRatingDeltaP1, getRatingDeltaP2);
                     });
                 });
@@ -337,6 +378,7 @@ class AddGame extends Component {
             rootRef.child('users/' + this.state.p2Key).update({gamesLost: p2Lost, gamesPlayed: p2Games, goalsFor: p2GoalsFor, goalsAgainst: p2GoalsAgainst});
             //console.log(p1Wins);
         });
+
     }
 
     p2Wins(){
@@ -384,7 +426,7 @@ class AddGame extends Component {
     }
 
     pushTheGame(p1NewPoints,p2NewPoints){
-        console.log(p1NewPoints + ', ' + p2NewPoints);
+        console.log('P1 pts: '+p1NewPoints + ', P2 pts: ' + p2NewPoints);
         const newGame = {
             p1Key:this.state.valuep1Key,
             p1Team:this.state.p1Team,
@@ -403,19 +445,43 @@ class AddGame extends Component {
             timeStamp:timeRef,
             groupKey: '-KUh54HpGOGP850b2Tpu'
         };
-        if (newGame.p1Score.length) {
-            gamesRef.push(newGame);
+        gamesRef.push(newGame);
             console.log('new game pushed');
             this.setState({
-                p1Team: '',
-                p2Team: '',
-                p1Score: '',
-                p2Score: '',
-                submitDisabled: false
+                submitDisabled: false,
+                p1Key:'',
+                valuep1Key:'',
+                p1Team:'',
+                p1TeamVisible: false,
+                p1Score:'',
+                p1Winner:'',
+                p1Draw:'',
+                p1Loser:'',
+                p1NewPoints: '',
+                p2Key:'',
+                valuep2Key:'',
+                p2Team:'',
+                p2TeamVisible: false,
+                p2Score:'',
+                p2Winner:'',
+                p2Draw:'',
+                p2Loser:'',
+                users: [],
+                p1Points:'',
+                p1PointsNew:'',
+                p2Points:'',
+                p2PointsNew:'',
+                p2NewPoints: '',
+                scoreP1Viz:false,
+                scoreP2Viz: false,
+                errorMsg:''
+            }, function () {
+                this.handleRequestClose();
+                this.componentDidMount();
             });
-        }
-        this.handleRequestClose();
-        //setTimeout(function(){ location.reload(); }, 500);
+
+            //setTimeout(function(){ location.reload(); }, 500);
+
 
     }
 
@@ -428,7 +494,7 @@ class AddGame extends Component {
         };
         const styleDialog = {
             top: '-130px'
-        }
+        };
         const standardActions = [
             <FlatButton
                 label="Cancel"
@@ -439,6 +505,7 @@ class AddGame extends Component {
                 label="Add Game"
                 primary={true}
                 disabled={this.state.submitDisabled}
+                //disabled={this.handleDisabled}
                 onTouchTap={this.handleSubmit}
             />,
         ];
@@ -480,8 +547,9 @@ class AddGame extends Component {
                                 {this.renderP2Team()}
                                 {this.renderP2Score()}
                             </div>
-
                         </div>
+
+                        <p style={{color:'red'}}>{this.state.errorMsg}</p>
                     </form>
                 </Dialog>
                 <FloatingActionButton style={style} onTouchTap={this.handleTouchTap}>
