@@ -90,6 +90,7 @@ class AddGame extends Component {
                     style={styleList}
                     onChange={(evt) => this.setState({ p1Team: evt.target.value })}
                     value={this.state.p1Team}
+                    tabIndex="3"
                 />
             );
         }
@@ -103,6 +104,7 @@ class AddGame extends Component {
                     style={styleList}
                     onChange={(evt) => this.setState({ p2Team: evt.target.value })}
                     value={this.state.p2Team}
+                    tabIndex="4"
                 />
             );
         }
@@ -119,6 +121,7 @@ class AddGame extends Component {
                     style={styleList}
                     onChange={(evt) => this.setState({ p1Score: evt.target.value })}
                     value={this.state.p1Score}
+                    tabIndex="5"
                 />
             );
         }
@@ -135,6 +138,7 @@ class AddGame extends Component {
                     style={styleList}
                     onChange={(evt) => this.setState({ p2Score: evt.target.value })}
                     value={this.state.p2Score}
+                    tabIndex="6"
                 />
             );
         }
