@@ -48,7 +48,8 @@ class AddGame extends Component {
             p2NewPoints: '',
             goalDif:'',
             scoreP1Viz:false,
-            scoreP2Viz: false
+            scoreP2Viz: false,
+            Kfactor:0
 
         };
         this.handleSubmit = this.handleSubmit.bind(this);
@@ -143,7 +144,7 @@ class AddGame extends Component {
     handleChangeP1Key = (event, index, valuep1Key, evt) => {this.setState({valuep1Key, p1Key: valuep1Key}, function(){
         rootRef.child('users/' + this.state.p1Key).once('value', snap => {
             this.setState({p1Team: snap.val().favTeam, p1TeamVisible:true, scoreP1Viz:true}, function(){
-                console.log('super1');
+
             });
 
         });
@@ -152,15 +153,13 @@ class AddGame extends Component {
     handleChangeP2Key = (event, index, valuep2Key, evt) => {this.setState({valuep2Key, p2Key: valuep2Key}, function(){
         rootRef.child('users/' + this.state.p2Key).once('value', snap => {
             this.setState({p2Team: snap.val().favTeam, p2TeamVisible:true, scoreP2Viz:true }, function(){
-                console.log('super2');
+
             });
 
         });
     })};
 
     //handleChangeP2Key = (event, index, valuep2Key, evt) => this.setState({valuep2Key, p2Key: valuep2Key});
-    handleChangeP1Team = (event, index, valuep1Team, evt) => this.setState({valuep1Team, p1Team: valuep1Team});
-    handleChangeP2Team = (event, index, valuep2Team, evt) => this.setState({valuep2Team, p2Team: valuep2Team});
 
 
     handleSubmit(event) {
@@ -200,15 +199,26 @@ class AddGame extends Component {
                 //récup des points de P2
                 rootRef.child('users/' + this.state.p2Key).once('value', snap => {
                     this.setState({p2Points:snap.val().points}, function () {
+
+                        const diffScore = Number(this.state.p1Score) - Number(this.state.p2Score);
+                        const kBasis = 40;
+
+                        const kFactor = (diffScore === 2) ? (kBasis * 1.5)
+                                            : (diffScore === 3) ? (kBasis * 1.75)
+                                                : (diffScore >= 4) ? ((kBasis * 1.75) + (diffScore-3)/8)
+                                                    : kBasis;
+
+                        console.log('Goal Diff = ' + diffScore + '=> kFactor = ' + kFactor);
+
                         const diffRating =  Number(this.state.p2Points) - Number(this.state.p1Points);
                         const myChanceToWin = 1 / (Math.pow(10, diffRating / 400) + 1);
-                        const getRatingDelta =  Math.round(40 * (1 - myChanceToWin)); // 1 because win
+                        const getRatingDelta =  Math.round(kFactor * (1 - myChanceToWin)); // 1 because win
                         const getNewRatingP1 = Number(this.state.p1Points) + getRatingDelta;
 
 
                         const diffRatingP2 =  Number(this.state.p1Points) - Number(this.state.p2Points);
                         const myChanceToWinP2 = 1 / (Math.pow(10, diffRatingP2 / 400) + 1);
-                        const getRatingDeltaP2 =  Math.round(40 * (0 - myChanceToWinP2)); // 0 because lost
+                        const getRatingDeltaP2 =  Math.round(kFactor * (0 - myChanceToWinP2)); // 0 because lost
                         const getNewRatingP2 = Number(this.state.p2Points) + getRatingDeltaP2;
 
                         // push scores in DB
@@ -235,9 +245,20 @@ class AddGame extends Component {
                 //récup des points de P2
                 rootRef.child('users/' + this.state.p1Key).once('value', snap => {
                     this.setState({p1Points:snap.val().points}, function () {
+
+                        const diffScore = Number(this.state.p2Score) - Number(this.state.p1Score);
+                        const kBasis = 40;
+
+                        const kFactor = (diffScore === 2) ? (kBasis * 1.5)
+                            : (diffScore === 3) ? (kBasis * 1.75)
+                            : (diffScore >= 4) ? ((kBasis * 1.75) + (diffScore-3)/8)
+                            : kBasis;
+
+                        console.log('Goal Diff = ' + diffScore + '=> kFactor = ' + kFactor);
+
                         const diffRating =  Number(this.state.p1Points) - Number(this.state.p2Points);
                         const myChanceToWin = 1 / (Math.pow(10, diffRating / 400) + 1);
-                        const getRatingDelta =  Math.round(40 * (1 - myChanceToWin)); // 1 because win
+                        const getRatingDelta =  Math.round(kFactor * (1 - myChanceToWin)); // 1 because win
                         const getNewRatingP2 = Number(this.state.p2Points) + getRatingDelta;
                         //console.log(getNewRating);
 
@@ -363,14 +384,14 @@ class AddGame extends Component {
         const newGame = {
             p1Key:this.state.valuep1Key,
             p1Team:this.state.p1Team,
-            p1Score:this.state.p1Score.trim(),
+            p1Score:this.state.p1Score,
             p1Winner:this.state.p1Winner,
             p1Draw:this.state.p1Draw,
             p1Loser:this.state.p1Loser,
             p1GamePts:p1NewPoints,
             p2Key:this.state.valuep2Key,
             p2Team:this.state.p2Team,
-            p2Score:this.state.p2Score.trim(),
+            p2Score:this.state.p2Score,
             p2Winner:this.state.p2Winner,
             p2Draw:this.state.p2Draw,
             p2Loser:this.state.p2Loser,
@@ -390,7 +411,7 @@ class AddGame extends Component {
             });
         }
         this.handleRequestClose();
-        setTimeout(function(){ location.reload(); }, 500);
+        //setTimeout(function(){ location.reload(); }, 500);
 
     }
 
@@ -436,19 +457,6 @@ class AddGame extends Component {
                                     onChange={this.handleChangeP1Key}>
                                     {this.renderUsers()}
                                 </SelectField>
-                                {/*<SelectField
-                                    value={this.state.valuep1Team}
-                                    style={styleList}
-                                    floatingLabelText="Team P1"
-                                    onChange={this.handleChangeP1Team}>
-                                    <MenuItem value="Real Madrid" primaryText='Real Madrid'  />
-                                    <MenuItem value="Man. United" primaryText='Man. United'  />
-                                    <MenuItem value="Man. City" primaryText='Man. City'  />
-                                    <MenuItem value="Chelsea" primaryText='Chelsea'  />
-                                    <MenuItem value="Juventus" primaryText='Juventus'  />
-                                    <MenuItem value="FC Bayern" primaryText='FC Bayern'  />
-                                    <MenuItem value="Paris SG" primaryText='Paris SG'  />
-                                </SelectField>*/}
                                 {this.renderP1Team()}
                                 {this.renderP1Score()}
 
@@ -461,19 +469,6 @@ class AddGame extends Component {
                                     onChange={this.handleChangeP2Key}>
                                     {this.renderUsers()}
                                 </SelectField>
-                                {/*<SelectField
-                                    value={this.state.valuep2Team}
-                                    style={styleList}
-                                    floatingLabelText="Team P2"
-                                    onChange={this.handleChangeP2Team}>
-                                    <MenuItem value="Real Madrid" primaryText='Real Madrid'  />
-                                    <MenuItem value="Man. United" primaryText='Man. United'  />
-                                    <MenuItem value="Man. City" primaryText='Man. City'  />
-                                    <MenuItem value="Chelsea" primaryText='Chelsea'  />
-                                    <MenuItem value="Juventus" primaryText='Juventus'  />
-                                    <MenuItem value="FC Bayern" primaryText='FC Bayern'  />
-                                    <MenuItem value="Paris SG" primaryText='Paris SG'  />
-                                </SelectField>*/}
                                 {this.renderP2Team()}
                                 {this.renderP2Score()}
                             </div>
