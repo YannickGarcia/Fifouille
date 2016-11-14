@@ -205,23 +205,18 @@ class AddGame extends Component {
                         const getRatingDelta =  Math.round(40 * (1 - myChanceToWin)); // 1 because win
                         const getNewRatingP1 = Number(this.state.p1Points) + getRatingDelta;
 
-                        //Si le perdant (P2) avait plus de points, il perds des points, si il avait moins de points, il n'en perd pas
-                        if(Number(this.state.p2Points) > Number(this.state.p1Points)){
-                            const diffRatingP2 =  Number(this.state.p1Points) - Number(this.state.p2Points);
-                            const myChanceToWinP2 = 1 / (Math.pow(10, diffRatingP2 / 400) + 1);
-                            const getRatingDeltaP2 =  Math.round(40 * (0 - myChanceToWinP2)); // 0 because lost
-                            const getNewRatingP2 = Number(this.state.p2Points) + getRatingDeltaP2;
-                            rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
 
-                            // push scores in DB
-                            rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
-                            rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
-                            this.pushTheGame(getRatingDelta,getRatingDeltaP2);
-                        }else{
-                            // push scores in DB
-                            rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
-                            this.pushTheGame(getRatingDelta,0);
-                        }
+                        const diffRatingP2 =  Number(this.state.p1Points) - Number(this.state.p2Points);
+                        const myChanceToWinP2 = 1 / (Math.pow(10, diffRatingP2 / 400) + 1);
+                        const getRatingDeltaP2 =  Math.round(40 * (0 - myChanceToWinP2)); // 0 because lost
+                        const getNewRatingP2 = Number(this.state.p2Points) + getRatingDeltaP2;
+
+                        // push scores in DB
+                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
+                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
+
+                        this.pushTheGame(getRatingDelta,getRatingDeltaP2);
+
 
 
                     });
@@ -246,23 +241,16 @@ class AddGame extends Component {
                         const getNewRatingP2 = Number(this.state.p2Points) + getRatingDelta;
                         //console.log(getNewRating);
 
-                        //Si le perdant (P1) avait plus de points, il perds des points, si il avait moins de points, il n'en perd pas
-                        if(Number(this.state.p1Points) > Number(this.state.p2Points)){
-                            const diffRatingP1 =  Number(this.state.p2Points) - Number(this.state.p1Points);
-                            const myChanceToWinP1 = 1 / (Math.pow(10, diffRatingP1 / 400) + 1);
-                            const getRatingDeltaP1 =  Math.round(40 * (0 - myChanceToWinP1)); // 0 because lost
-                            const getNewRatingP1 = Number(this.state.p1Points) + getRatingDeltaP1;
-                            rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
+                        const diffRatingP1 =  Number(this.state.p2Points) - Number(this.state.p1Points);
+                        const myChanceToWinP1 = 1 / (Math.pow(10, diffRatingP1 / 400) + 1);
+                        const getRatingDeltaP1 =  Math.round(40 * (0 - myChanceToWinP1)); // 0 because lost
+                        const getNewRatingP1 = Number(this.state.p1Points) + getRatingDeltaP1;
 
-                            // push scores in DB
-                            rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
-                            rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
-                            this.pushTheGame(getRatingDeltaP1, getRatingDelta);
-                        }else{
-                            // push scores in DB
-                            rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
-                            this.pushTheGame(0,getRatingDelta);
-                        }
+                        // push scores in DB
+                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
+                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
+
+                        this.pushTheGame(getRatingDeltaP1, getRatingDelta);
 
                         // push in DB
                         rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
