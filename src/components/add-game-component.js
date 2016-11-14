@@ -222,8 +222,8 @@ class AddGame extends Component {
                         const getNewRatingP2 = Number(this.state.p2Points) + getRatingDeltaP2;
 
                         // push scores in DB
-                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
-                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
+                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1 < 0 ? 0 : getNewRatingP1});
+                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2 < 0 ? 0 : getNewRatingP2});
 
                         this.pushTheGame(getRatingDelta,getRatingDeltaP2);
 
@@ -268,8 +268,8 @@ class AddGame extends Component {
                         const getNewRatingP1 = Number(this.state.p1Points) + getRatingDeltaP1;
 
                         // push scores in DB
-                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
-                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
+                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1 < 0 ? 0 : getNewRatingP1});
+                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2 < 0 ? 0 : getNewRatingP2});
 
                         this.pushTheGame(getRatingDeltaP1, getRatingDelta);
 
@@ -302,8 +302,8 @@ class AddGame extends Component {
                         const getNewRatingP2 = Number(this.state.p2Points) + getRatingDeltaP2;
 
                         // push in DB
-                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1});
-                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2});
+                        rootRef.child('users/' + this.state.p1Key).update({points: getNewRatingP1 < 0 ? 0 : getNewRatingP1});
+                        rootRef.child('users/' + this.state.p2Key).update({points: getNewRatingP2 < 0 ? 0 : getNewRatingP2});
 
                         this.pushTheGame(getRatingDeltaP1, getRatingDeltaP2);
                     });
