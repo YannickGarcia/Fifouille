@@ -11,8 +11,8 @@ import * as firebase from 'firebase';
  storageBucket: "fifouille-5dccb.appspot.com",
  messagingSenderId: "671212363239"
  };
-
 /*
+
 // DB DEV
  const config = {
      apiKey: "AIzaSyBRp1ebUwX98lKMK6ns8i9EEY6M2twy1oo",
@@ -21,7 +21,7 @@ import * as firebase from 'firebase';
      storageBucket: "offifa-dev.appspot.com",
      messagingSenderId: "733443285053"
  };
-*/
+ */
 
 
 firebase.initializeApp(config);

@@ -86,7 +86,7 @@ class AddGame extends Component {
         if(this.state.p1TeamVisible){
             return(
                 <TextField
-                    hintText="P2 Team"
+                    hintText="P1 Team"
                     style={styleList}
                     onChange={(evt) => this.setState({ p1Team: evt.target.value })}
                     value={this.state.p1Team}
@@ -100,7 +100,7 @@ class AddGame extends Component {
         if(this.state.p2TeamVisible){
             return(
                 <TextField
-                    hintText="P1 Team"
+                    hintText="P2 Team"
                     style={styleList}
                     onChange={(evt) => this.setState({ p2Team: evt.target.value })}
                     value={this.state.p2Team}

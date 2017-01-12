@@ -43,10 +43,10 @@ class userList extends React.Component {
             <div className="userList">
 
                 <List>
+                    {myUserList}
+                    <br/>
                     <Subheader>Group Players & Ranking</Subheader>
                     <p style={{fontSize:'13px', color:'#999', padding:'0 15px'}}>Offifa is using the World Football ELO Rating System. Ratings for teams with fewer than 30 matches should be considered provisional.</p>
-                    <br/>
-                    {myUserList}
                     <AddUser/>
                 </List>
             </div>
